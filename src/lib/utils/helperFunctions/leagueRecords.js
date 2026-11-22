@@ -138,6 +138,9 @@ const processRegularSeason = async ({rosters, leagueData, curSeason, week, regul
 	// after that get the final week of regular season from leagueData
 	if(leagueData.status == 'complete' || week > leagueData.settings.playoff_week_start - 1) {
 		week = leagueData.settings.playoff_week_start - 1;
+	} else {
+		// regular season still has games left to play
+		regularSeason.markIncompleteYear(year);
 	}
 
 	for(const rosterID in rosters) {
