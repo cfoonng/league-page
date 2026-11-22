@@ -1,11 +1,12 @@
 <script>
     // Ring of Honor: pick a manager and see their all-time team, built from the points each
-    // player scored in that manager's starting lineups (regular season). Nothing to upload.
+    // player scored in that manager's starting lineups (regular season + playoffs). Nothing to upload.
     import Button, { Group, Label } from '@smui/button';
     import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
     import LinearProgress from '@smui/linear-progress';
-    import { getLeagueRecords, getLeagueTeamManagers, loadPlayers, waitForAll } from '$lib/utils/helper';
+    import { getLeagueRecords, getLeagueTeamManagers, loadPlayers, waitForAll, leagueID } from '$lib/utils/helper';
     import { managersInHistory, managerTotals, formatYears, allTimeTeam } from './ringMath';
+    import { loadPlayoffWeeks } from './ringPlayoffs';
 
     let lineupWeeks = $state(null);
     let lineupSlots = $state({});
@@ -15,13 +16,14 @@
     let managerID = $state(null);
 
     $effect(() => {
-        waitForAll(getLeagueRecords(false), loadPlayers(null), getLeagueTeamManagers())
-            .then(async ([records, playersInfo, managers]) => {
+        waitForAll(getLeagueRecords(false), loadPlayers(null), getLeagueTeamManagers(), loadPlayoffWeeks(leagueID).catch(() => []))
+            .then(async ([records, playersInfo, managers, playoffWeeks]) => {
                 players = playersInfo.players;
                 leagueTeamManagers = managers;
                 if(records.stale) records = await getLeagueRecords(true);
                 lineupSlots = records.regularSeasonData?.lineupSlots || {};
-                lineupWeeks = records.regularSeasonData?.lineupWeeks || [];
+                // regular season + playoff starting lineups
+                lineupWeeks = [...(records.regularSeasonData?.lineupWeeks || []), ...(playoffWeeks || [])];
             })
             .catch(err => loadError = err?.message || 'Something went wrong');
     });
@@ -53,6 +55,7 @@
         : {starters: [], subs: []});
 
     let starterTotal = $derived(team.starters.reduce((sum, s) => sum + (s.player?.pts || 0), 0));
+    let starterPlayoffTotal = $derived(team.starters.reduce((sum, s) => sum + (s.player?.playoffPts || 0), 0));
 
     const playerName = (pid) => {
         const p = players?.[pid];
@@ -185,9 +188,11 @@
             <Cell>{fmt(spot.player.pts)}</Cell>
             <Cell>{fmt(spot.player.pts / spot.player.games)}</Cell>
             <Cell>{spot.player.games}</Cell>
+            <Cell>{fmt(spot.player.playoffPts)}</Cell>
+            <Cell>{spot.player.playoffGames}</Cell>
             <Cell>{formatYears(spot.player.years)}</Cell>
         {:else}
-            <Cell colspan=5><i class="pos">empty</i></Cell>
+            <Cell colspan=7><i class="pos">empty</i></Cell>
         {/if}
     </Row>
 {/snippet}
@@ -217,9 +222,9 @@
                 <DataTable class="ringTable">
                     <Head>
                         <Row>
-                            <Cell class="header tableHeader" colspan=6>
+                            <Cell class="header tableHeader" colspan=8>
                                 {userName(managerID)}'s All-Time Team
-                                <span class="subTitle">Regular season points scored in {userName(managerID)}'s starting lineups</span>
+                                <span class="subTitle">Regular season and playoff points scored in {userName(managerID)}'s starting lineups</span>
                             </Cell>
                         </Row>
                         <Row>
@@ -228,6 +233,8 @@
                             <Cell class="header">Points</Cell>
                             <Cell class="header">Points<br />Per Game</Cell>
                             <Cell class="header">Games</Cell>
+                            <Cell class="header">Playoff<br />Points</Cell>
+                            <Cell class="header">Playoff<br />Games</Cell>
                             <Cell class="header">Years</Cell>
                         </Row>
                     </Head>
@@ -239,10 +246,13 @@
                             <Cell></Cell>
                             <Cell>Starters Total</Cell>
                             <Cell>{fmt(starterTotal)}</Cell>
-                            <Cell colspan=3></Cell>
+                            <Cell></Cell>
+                            <Cell></Cell>
+                            <Cell>{fmt(starterPlayoffTotal)}</Cell>
+                            <Cell colspan=2></Cell>
                         </Row>
                         {#if team.subs.length}
-                            <Row class="subsRow"><Cell colspan=6>Substitutes</Cell></Row>
+                            <Row class="subsRow"><Cell colspan=8>Substitutes</Cell></Row>
                             {#each team.subs as spot}
                                 {@render playerRow(spot)}
                             {/each}

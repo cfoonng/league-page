@@ -28,9 +28,13 @@ export const managerTotals = (lineupWeeks, managerID, positionOf) => {
         (entry.starters || []).forEach((pid, i) => {
             if(!pid || pid == '0' || positionOf(pid) == 'DEF') return;
             const pts = Number(entry.startersPoints?.[i]) || 0;
-            const t = totals[pid] || (totals[pid] = {pid, pts: 0, games: 0, years: new Set()});
+            const t = totals[pid] || (totals[pid] = {pid, pts: 0, games: 0, playoffPts: 0, playoffGames: 0, years: new Set()});
             t.pts += pts;
             t.games += 1;
+            if(entry.playoff) {
+                t.playoffPts += pts;
+                t.playoffGames += 1;
+            }
             t.years.add(Number(entry.year));
         });
     }
