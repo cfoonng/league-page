@@ -59,6 +59,12 @@
         text-align: center;
     }
 
+    /* actual standing next to the actual record, 2pt smaller */
+    .standing {
+        font-size: calc(1em - 2pt);
+        color: var(--g999);
+    }
+
     .up {
         color: #3a9d4f;
     }
@@ -105,19 +111,17 @@
                                 <img class="avatar" alt="manager avatar" src={avatarFor(row)} />
                             {/if}
                             <span>{nameFor(row)}</span>
+                            {#if row.change > 0}
+                                <span class="move up" title="Would have finished {row.change} spot{row.change == 1 ? '' : 's'} higher">▲</span>
+                            {:else if row.change < 0}
+                                <span class="move down" title="Would have finished {-row.change} spot{row.change == -1 ? '' : 's'} lower">▼</span>
+                            {:else}
+                                <span class="move same" title="Same finish">–</span>
+                            {/if}
                         </div>
                     </Cell>
-                    <Cell>
-                        {row.record}
-                        {#if row.change > 0}
-                            <span class="move up" title="Would have finished {row.change} spot{row.change == 1 ? '' : 's'} higher">▲</span>
-                        {:else if row.change < 0}
-                            <span class="move down" title="Would have finished {-row.change} spot{row.change == -1 ? '' : 's'} lower">▼</span>
-                        {:else}
-                            <span class="move same" title="Same finish">–</span>
-                        {/if}
-                    </Cell>
-                    <Cell>{row.actualRecord}</Cell>
+                    <Cell>{row.record}</Cell>
+                    <Cell>{row.actualRecord}&nbsp;&nbsp;<span class="standing">(#{row.actualRank})</span></Cell>
                 </Row>
             {/each}
         </Body>

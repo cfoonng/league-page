@@ -9,6 +9,7 @@
 	import AchieverChart from './AchieverChart.svelte';
 	import LastUpdated from './LastUpdated.svelte';
 	import BestBallTable from './BestBallTable.svelte';
+	import ManagerChangesTable from './ManagerChangesTable.svelte';
 
     export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], allTime=false, leagueTeamManagers;
 
@@ -504,13 +505,13 @@
     </div>
 </div>
 
-<!-- second row: perfect-lineups table under the efficiency chart, right side reserved -->
+<!-- second row: perfect-lineups table (left) and lineup changes table (right) -->
 <div class="settingLineups secondRow">
     <div class="settingLineupsPanel">
         <BestBallTable {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} />
     </div>
     <div class="settingLineupsPanel">
-        <!-- right-hand panel: reserved for the next item -->
+        <ManagerChangesTable {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} />
     </div>
 </div>
 
