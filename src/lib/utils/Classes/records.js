@@ -18,6 +18,8 @@ export class Records {
 		this.allTimeBiggestBlowouts = [];
 		this.allTimeClosestMatchups = [];
 		this.allTimeMostCombined = [];
+		this.lineupWeeks = []; // every regular season starting lineup: {year, week, rosterID, managers, starters, startersPoints}
+		this.lineupSlots = {}; // starting lineup slots for each year, e.g. {2025: ['QB', 'RB', ...]}
 		this.allTimeLeastCombined = [];
 		this.leastSeasonLongPoints = [];
 		this.mostSeasonLongPoints = [];
@@ -159,6 +161,24 @@ Records.prototype.addAllTimeMatchupDifferentials = function(matchupDifferentials
 
 
 /**
+ * Adds one team's starting lineup for one week (used for position contributions).
+ * @param {Object} entry {year, week, rosterID, managers, starters, startersPoints}
+ */
+Records.prototype.addLineupWeek = function(entry) {
+    this.lineupWeeks.push(entry);
+}
+
+/**
+ * Records the starting lineup slots used in a given year.
+ * @param {int} year
+ * @param {string[]} slots
+ */
+Records.prototype.setLineupSlots = function(year, slots) {
+    this.lineupSlots[year] = slots;
+}
+
+
+/**
  * Adds an entry to the seasonWeekRecords array.
  * 
  * The seasonWeekRecords is an array of objects that contain the biggest blowouts, narrowest
@@ -212,6 +232,8 @@ Records.prototype.returnRecords = function() {
         allTimeBiggestBlowouts: this.allTimeBiggestBlowouts,
         allTimeClosestMatchups: this.allTimeClosestMatchups,
         allTimeMostCombined: this.allTimeMostCombined,
+        lineupWeeks: this.lineupWeeks,
+        lineupSlots: this.lineupSlots,
         allTimeLeastCombined: this.allTimeLeastCombined,
         leastSeasonLongPoints: this.leastSeasonLongPoints,
         mostSeasonLongPoints: this.mostSeasonLongPoints,
