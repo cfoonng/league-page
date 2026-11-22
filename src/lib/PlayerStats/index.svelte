@@ -69,6 +69,11 @@
     // the manager he played for that season; null if he was on more than one roster
     const seasonManager = (row) => row.rosterIDs.length == 1 ? teamName(row.rosterIDs[0], row.year) : null;
 
+    // Sleeper headshot (team logo for defenses), same images the Rosters page uses
+    const playerPhoto = (pid) => positionOf(pid) == 'DEF'
+        ? `background-image: url(https://sleepercdn.com/images/team_logos/nfl/${String(pid).toLowerCase()}.png)`
+        : `background-image: url(https://sleepercdn.com/content/nfl/players/thumb/${pid}.jpg), url(https://sleepercdn.com/images/v2/icons/player_default.webp)`;
+
     // split at the first space, e.g. "Ja'Marr Chase" -> ["Ja'Marr", "Chase"], "Amon-Ra St. Brown" -> ["Amon-Ra", "St. Brown"]
     const splitName = (text) => {
         const i = (text || '').indexOf(' ');
@@ -147,6 +152,23 @@
         font-style: italic;
         font-size: 0.8em;
         color: var(--g999);
+    }
+
+    .playerCell {
+        display: flex;
+        align-items: center;
+    }
+
+    .playerPhoto {
+        flex: 0 0 auto;
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+        border-radius: 50%;
+        background-color: var(--fff);
+        background-size: cover;
+        background-position: center;
+        border: 0.25px solid #777;
     }
 
     .pos {
@@ -237,7 +259,12 @@
                         {#each seasonRows as row, ix}
                             <Row>
                                 <Cell>{ix + 1}</Cell>
-                                <Cell>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
+                                <Cell>
+                                    <div class="playerCell">
+                                        <div class="playerPhoto" style={playerPhoto(row.pid)}></div>
+                                        <span>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></span>
+                                    </div>
+                                </Cell>
                                 <Cell>
                                     {#if seasonManager(row) !== null}
                                         {seasonManager(row)}
@@ -281,7 +308,12 @@
                         {#each gameRows as row, ix}
                             <Row>
                                 <Cell>{ix + 1}</Cell>
-                                <Cell>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
+                                <Cell>
+                                    <div class="playerCell">
+                                        <div class="playerPhoto" style={playerPhoto(row.pid)}></div>
+                                        <span>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></span>
+                                    </div>
+                                </Cell>
                                 <Cell>{teamName(row.rosterID, row.year)}</Cell>
                                 <Cell>{row.year} Week {row.week}</Cell>
                                 <Cell>{fmt(row.pts)}</Cell>
@@ -321,7 +353,12 @@
                             {#each moveRows as row, ix}
                                 <Row>
                                     <Cell>{ix + 1}</Cell>
-                                    <Cell>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
+                                    <Cell>
+                                    <div class="playerCell">
+                                        <div class="playerPhoto" style={playerPhoto(row.pid)}></div>
+                                        <span>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></span>
+                                    </div>
+                                </Cell>
                                     <Cell>{moveManager(row)}</Cell>
                                     <Cell>{fmt(row.ptsMissed)}</Cell>
                                     <Cell>{fmt(row.ppgMissed)}</Cell>
