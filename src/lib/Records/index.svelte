@@ -18,6 +18,9 @@
     let allTimeClosestMatchups = $state();
     let allTimeBiggestBlowouts = $state();
     let allTimeMostCombined = $state();
+    let mostSeasonLongMaxPF = $state([]);
+    let leastSeasonLongMaxPF = $state([]);
+    let incompleteYears = $state([]);
     let lineupWeeks = $state([]);
     let lineupSlots = $state({});
     let allTimeLeastCombined = $state();
@@ -49,6 +52,9 @@
         allTimeClosestMatchups = selectedLeagueData.allTimeClosestMatchups;
         allTimeBiggestBlowouts = selectedLeagueData.allTimeBiggestBlowouts;
         allTimeMostCombined = selectedLeagueData.allTimeMostCombined;
+        mostSeasonLongMaxPF = selectedLeagueData.mostSeasonLongMaxPF || [];
+        leastSeasonLongMaxPF = selectedLeagueData.leastSeasonLongMaxPF || [];
+        incompleteYears = selectedLeagueData.incompleteYears || [];
         lineupWeeks = selectedLeagueData.lineupWeeks || [];
         lineupSlots = selectedLeagueData.lineupSlots || {};
         allTimeLeastCombined = selectedLeagueData.allTimeLeastCombined;
@@ -129,7 +135,7 @@
 
     {#if display == "allTime"}
         {#if leagueWeekHighs?.length}
-            <AllTimeRecords transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {allTimeMostCombined} {allTimeLeastCombined} {lineupWeeks} {lineupSlots} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
+            <AllTimeRecords transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {allTimeMostCombined} {allTimeLeastCombined} {mostSeasonLongMaxPF} {leastSeasonLongMaxPF} {incompleteYears} {lineupWeeks} {lineupSlots} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
         {:else}
             <p class="empty">No records <i>yet</i>...</p>
         {/if}

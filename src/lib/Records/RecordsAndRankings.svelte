@@ -12,10 +12,13 @@
 	import ManagerChangesTable from './ManagerChangesTable.svelte';
 	import PositionContributions from './PositionContributions.svelte';
 
-    export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], lineupWeeks = [], lineupSlots = {}, allTime=false, leagueTeamManagers;
+    export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], lineupWeeks = [], lineupSlots = {}, seasonLongMaxPF = [], seasonLongMaxPFLows = [], incompleteYears = [], allTime=false, leagueTeamManagers;
 
     // Rankings section (chart + Lineup IQ / Win % / Fantasy Points / Transactions tables) is hidden for now
     const SHOW_RANKINGS = false;
+
+    // seasons with regular season games still left: their season totals get a *
+    $: incompleteSet = new Set((incompleteYears || []).map(Number));
 
     // How many blowouts / narrowest wins to show: 10 for all-time, 5 for a single season
     $: matchupRecordCount = allTime ? 10 : 5;
@@ -298,6 +301,14 @@
         max-width: 1200px;
     }
 
+    .inProgressNote {
+        text-align: center;
+        font-style: italic;
+        font-size: 0.8em;
+        color: var(--g999);
+        margin: -3em 0 3em;
+    }
+
     .settingLineups.secondRow {
         margin-top: 2em;
     }
@@ -523,6 +534,126 @@
 <h4>Scoring Records</h4>
 
 <div class="fullFlex">
+    {#if allTime && key == "regularSeasonData"}
+        <DataTable class="recordTable">
+            <Head>
+                <Row>
+                    <Cell class="header headerPrimary" colspan=5>All-Time Highest Season Points<span class="italic">Ranked by PPG</span></Cell>
+                </Row>
+                <Row>
+                    <Cell class="header rank"></Cell>
+                    <Cell class="header">Manager</Cell>
+                    <Cell class="header">Year</Cell>
+                    <Cell class="header">Total Points</Cell>
+                    <Cell class="header">PPG</Cell>
+                </Row>
+            </Head>
+            <Body>
+                {#each seasonLongRecords as mostSeasonLongPoint, ix}
+                    <Row>
+                        <Cell class="rank">{ix + 1}</Cell>
+                        <Cell class="cellName" onclick={() => gotoManager({year: mostSeasonLongPoint.year, leagueTeamManagers, rosterID: mostSeasonLongPoint.rosterID})}>
+                            <RecordTeam {leagueTeamManagers} rosterID={mostSeasonLongPoint.rosterID} year={mostSeasonLongPoint.year} />
+                        </Cell>
+                        <Cell>{mostSeasonLongPoint.year}</Cell>
+                        <Cell>{round(mostSeasonLongPoint.fpts)}{incompleteSet.has(Number(mostSeasonLongPoint.year)) ? '*' : ''}</Cell>
+                        <Cell>{mostSeasonLongPoint.fptsPerGame}{incompleteSet.has(Number(mostSeasonLongPoint.year)) ? '*' : ''}</Cell>
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    {/if}
+
+    {#if allTime && key == "regularSeasonData"}
+        <DataTable class="recordTable">
+            <Head>
+                <Row>
+                    <Cell class="header headerPrimary" colspan=5>All-Time Lowest Season Points<span class="italic">Ranked by PPG</span></Cell>
+                </Row>
+                <Row>
+                    <Cell class="header rank"></Cell>
+                    <Cell class="header">Manager</Cell>
+                    <Cell class="header">Year</Cell>
+                    <Cell class="header">Total Points</Cell>
+                    <Cell class="header">PPG</Cell>
+                </Row>
+            </Head>
+            <Body>
+                {#each seasonLongLows as leastSeasonLongPoint, ix}
+                    <Row>
+                        <Cell class="rank">{ix + 1}</Cell>
+                        <Cell class="cellName" onclick={() => gotoManager({year: leastSeasonLongPoint.year, leagueTeamManagers, rosterID: leastSeasonLongPoint.rosterID})}>
+                            <RecordTeam {leagueTeamManagers} rosterID={leastSeasonLongPoint.rosterID} year={leastSeasonLongPoint.year} />
+                        </Cell>
+                        <Cell>{leastSeasonLongPoint.year}</Cell>
+                        <Cell>{round(leastSeasonLongPoint.fpts)}{incompleteSet.has(Number(leastSeasonLongPoint.year)) ? '*' : ''}</Cell>
+                        <Cell>{leastSeasonLongPoint.fptsPerGame}{incompleteSet.has(Number(leastSeasonLongPoint.year)) ? '*' : ''}</Cell>
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    {/if}
+
+    {#if allTime && seasonLongMaxPF && seasonLongMaxPF.length}
+        <DataTable class="recordTable">
+            <Head>
+                <Row>
+                    <Cell class="header headerPrimary" colspan=5>All-Time Highest Season MaxPF<span class="italic">Ranked by MaxPF per game</span></Cell>
+                </Row>
+                <Row>
+                    <Cell class="header rank"></Cell>
+                    <Cell class="header">Manager</Cell>
+                    <Cell class="header">Year</Cell>
+                    <Cell class="header">Total MaxPF</Cell>
+                    <Cell class="header">MaxPF/G</Cell>
+                </Row>
+            </Head>
+            <Body>
+                {#each seasonLongMaxPF as maxPFHigh, ix}
+                    <Row>
+                        <Cell class="rank">{ix + 1}</Cell>
+                        <Cell class="cellName" onclick={() => gotoManager({year: maxPFHigh.year, leagueTeamManagers, rosterID: maxPFHigh.rosterID})}>
+                            <RecordTeam {leagueTeamManagers} rosterID={maxPFHigh.rosterID} year={maxPFHigh.year} />
+                        </Cell>
+                        <Cell>{maxPFHigh.year}</Cell>
+                        <Cell>{round(maxPFHigh.maxPF)}{incompleteSet.has(Number(maxPFHigh.year)) ? '*' : ''}</Cell>
+                        <Cell>{maxPFHigh.maxPFPerGame}{incompleteSet.has(Number(maxPFHigh.year)) ? '*' : ''}</Cell>
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    {/if}
+
+    {#if allTime && seasonLongMaxPFLows && seasonLongMaxPFLows.length}
+        <DataTable class="recordTable">
+            <Head>
+                <Row>
+                    <Cell class="header headerPrimary" colspan=5>All-Time Lowest Season MaxPF<span class="italic">Ranked by MaxPF per game</span></Cell>
+                </Row>
+                <Row>
+                    <Cell class="header rank"></Cell>
+                    <Cell class="header">Manager</Cell>
+                    <Cell class="header">Year</Cell>
+                    <Cell class="header">Total MaxPF</Cell>
+                    <Cell class="header">MaxPF/G</Cell>
+                </Row>
+            </Head>
+            <Body>
+                {#each seasonLongMaxPFLows as maxPFLow, ix}
+                    <Row>
+                        <Cell class="rank">{ix + 1}</Cell>
+                        <Cell class="cellName" onclick={() => gotoManager({year: maxPFLow.year, leagueTeamManagers, rosterID: maxPFLow.rosterID})}>
+                            <RecordTeam {leagueTeamManagers} rosterID={maxPFLow.rosterID} year={maxPFLow.year} />
+                        </Cell>
+                        <Cell>{maxPFLow.year}</Cell>
+                        <Cell>{round(maxPFLow.maxPF)}{incompleteSet.has(Number(maxPFLow.year)) ? '*' : ''}</Cell>
+                        <Cell>{maxPFLow.maxPFPerGame}{incompleteSet.has(Number(maxPFLow.year)) ? '*' : ''}</Cell>
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    {/if}
+
     {#if weekRecords && weekRecords.length}
         <DataTable class="recordTable">
             <Head>
@@ -573,66 +704,6 @@
                         </Cell>
                         <Cell>{allTime ? leagueWeekLow.year + " " : "" }{key == "regularSeasonData" ? "Week " : ""}{leagueWeekLow.week}</Cell>
                         <Cell>{round(leagueWeekLow.fpts)}</Cell>
-                    </Row>
-                {/each}
-            </Body>
-        </DataTable>
-    {/if}
-
-    {#if allTime && key == "regularSeasonData"}
-        <DataTable class="recordTable">
-            <Head>
-                <Row>
-                    <Cell class="header headerPrimary" colspan=5>All-Time Highest Season Points<span class="italic">Ranked by PPG</span></Cell>
-                </Row>
-                <Row>
-                    <Cell class="header rank"></Cell>
-                    <Cell class="header">Manager</Cell>
-                    <Cell class="header">Year</Cell>
-                    <Cell class="header">Total Points</Cell>
-                    <Cell class="header">PPG</Cell>
-                </Row>
-            </Head>
-            <Body>
-                {#each seasonLongRecords as mostSeasonLongPoint, ix}
-                    <Row>
-                        <Cell class="rank">{ix + 1}</Cell>
-                        <Cell class="cellName" onclick={() => gotoManager({year: mostSeasonLongPoint.year, leagueTeamManagers, rosterID: mostSeasonLongPoint.rosterID})}>
-                            <RecordTeam {leagueTeamManagers} rosterID={mostSeasonLongPoint.rosterID} year={mostSeasonLongPoint.year} />
-                        </Cell>
-                        <Cell>{mostSeasonLongPoint.year}</Cell>
-                        <Cell>{round(mostSeasonLongPoint.fpts)}</Cell>
-                        <Cell>{mostSeasonLongPoint.fptsPerGame}</Cell>
-                    </Row>
-                {/each}
-            </Body>
-        </DataTable>
-    {/if}
-    
-    {#if allTime && key == "regularSeasonData"}
-        <DataTable class="recordTable">
-            <Head>
-                <Row>
-                    <Cell class="header headerPrimary" colspan=5>All-Time Lowest Season Points<span class="italic">Ranked by PPG</span></Cell>
-                </Row>
-                <Row>
-                    <Cell class="header rank"></Cell>
-                    <Cell class="header">Manager</Cell>
-                    <Cell class="header">Year</Cell>
-                    <Cell class="header">Total Points</Cell>
-                    <Cell class="header">PPG</Cell>
-                </Row>
-            </Head>
-            <Body>
-                {#each seasonLongLows as leastSeasonLongPoint, ix}
-                    <Row>
-                        <Cell class="rank">{ix + 1}</Cell>
-                        <Cell class="cellName" onclick={() => gotoManager({year: leastSeasonLongPoint.year, leagueTeamManagers, rosterID: leastSeasonLongPoint.rosterID})}>
-                            <RecordTeam {leagueTeamManagers} rosterID={leastSeasonLongPoint.rosterID} year={leastSeasonLongPoint.year} />
-                        </Cell>
-                        <Cell>{leastSeasonLongPoint.year}</Cell>
-                        <Cell>{round(leastSeasonLongPoint.fpts)}</Cell>
-                        <Cell>{leastSeasonLongPoint.fptsPerGame}</Cell>
                     </Row>
                 {/each}
             </Body>
@@ -791,6 +862,10 @@
         </DataTable>
     {/if}
 </div>
+
+{#if allTime && incompleteSet.size}
+    <p class="inProgressNote">* season still in progress</p>
+{/if}
 
 <!-- Rankings are hidden for now (set SHOW_RANKINGS = true in the script to bring them back) -->
 {#if SHOW_RANKINGS && !allTime}
