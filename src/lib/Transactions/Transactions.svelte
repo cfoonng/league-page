@@ -60,6 +60,18 @@
 	.nothingYet {
 		margin: 5em 0;
 	}
+
+	.columns {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2em;
+		align-items: flex-start;
+	}
+
+	.column {
+		flex: 1 1 420px;
+		min-width: 0;
+	}
 </style>
 
 <div class="transactions">
@@ -67,32 +79,33 @@
 		<p>Loading league transactions...</p>
 		<LinearProgress indeterminate />
 	{:else}
-		<!-- waiver -->
-		{#if transactions.waivers.length}
-			<h5>Recent Waiver Moves</h5>
-			{#each transactions.waivers as transaction }
-				<WaiverTransaction {players} {transaction} {leagueTeamManagers} />
-			{/each}
+		<!-- trades and waivers side by side (stacked on narrow screens) -->
+		<div class="columns">
+			<div class="column">
+				{#if transactions.trades.length}
+					<h5>Recent Trades</h5>
+					{#each transactions.trades as transaction }
+						<TradeTransaction {players} {transaction} {leagueTeamManagers} />
+					{/each}
 
-			<p onclick={() => goto("/transactions?show=waiver&query=&page=1")} class="link">( view more )</p>
-		{:else}
-			<p class="nothingYet">No waiver moves have been made yet...</p>
-		{/if}
+					<p onclick={() => goto("/transactions?show=trade&query=&page=1")} class="link">( view more )</p>
+				{:else}
+					<p class="nothingYet">No trades have been made yet...</p>
+				{/if}
+			</div>
 
-		{#if transactions.waivers.length && transactions.trades.length}
-			<br />
-		{/if}
+			<div class="column">
+				{#if transactions.waivers.length}
+					<h5>Recent Waiver Moves</h5>
+					{#each transactions.waivers as transaction }
+						<WaiverTransaction {players} {transaction} {leagueTeamManagers} />
+					{/each}
 
-		<!-- trades -->
-		{#if transactions.trades.length}
-			<h5>Recent Trades</h5>
-			{#each transactions.trades as transaction }
-				<TradeTransaction {players} {transaction} {leagueTeamManagers} />
-			{/each}
-
-			<p onclick={() => goto("/transactions?show=trade&query=&page=1")} class="link">( view more )</p>
-		{:else}
-			<p class="nothingYet">No trades have been made yet...</p>
-		{/if}
+					<p onclick={() => goto("/transactions?show=waiver&query=&page=1")} class="link">( view more )</p>
+				{:else}
+					<p class="nothingYet">No waiver moves have been made yet...</p>
+				{/if}
+			</div>
+		</div>
 	{/if}
 </div>
