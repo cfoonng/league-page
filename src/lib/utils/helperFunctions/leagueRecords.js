@@ -170,6 +170,25 @@ const processRegularSeason = async ({rosters, leagueData, curSeason, week, regul
 
 	let seasonPointsRecord = [];
 	let matchupDifferentials = [];
+
+	// save every starting lineup (regular season games only) for the position contributions table
+	regularSeason.setLineupSlots(year, (leagueData.roster_positions || []).filter(p => !['BN', 'IR', 'TAXI'].includes(p)));
+	let lineupWeek = parseInt(startWeek);
+	for(const matchupWeek of matchupsData) {
+		for(const matchup of matchupWeek) {
+			if(!matchup.roster_id || !matchup.matchup_id || !matchup.starters) continue;
+			const roster = Object.values(rosters).find(r => r.roster_id == matchup.roster_id);
+			regularSeason.addLineupWeek({
+				year,
+				week: lineupWeek,
+				rosterID: matchup.roster_id,
+				managers: roster ? getManagers(roster) : [],
+				starters: matchup.starters,
+				startersPoints: matchup.starters_points || [],
+			});
+		}
+		lineupWeek--;
+	}
 	
 	// process all the matchups
 	for(const matchupWeek of matchupsData) {
