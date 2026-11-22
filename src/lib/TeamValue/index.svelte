@@ -162,9 +162,11 @@
         border: 0.25px solid #777;
     }
 
-    /* value and its rank stay on one line (global: the class is on an SMUI Cell) */
+    /* value on top, its rank underneath, both centered */
     :global(.valueTable .valueCell) {
         white-space: nowrap;
+        text-align: center;
+        line-height: 1.2;
     }
 
     /* rank within the column, 2pt smaller */
@@ -306,7 +308,7 @@
                             <Cell><span class={sortKey == 'record' ? 'selected' : ''}>{recordFor(row)}</span></Cell>
                             {#each COLUMNS as [key]}
                                 <Cell class="valueCell" style="background-color: {cellColor(key, row[key])};">
-                                    <span class={sortKey == key ? 'selected' : ''}>{fmt(row[key])}</span>&nbsp;&nbsp;<span class="standing">(#{ranks[key][row.rosterID]})</span>
+                                    <span class={sortKey == key ? 'selected' : ''}>{fmt(row[key])}</span><br /><span class="standing">(#{ranks[key][row.rosterID]})</span>
                                 </Cell>
                             {/each}
                         </Row>
