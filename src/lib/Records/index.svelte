@@ -81,7 +81,9 @@
         {id: 'seasons', title: 'Best/Worst Seasons'},
         {id: 'scoring', title: 'Scoring Records'},
     ];
-    let views = $state({lineups: 'allTime', positions: 'allTime', seasons: 'allTime', scoring: 'allTime'});
+    // null = the newest season (the default); 'allTime' or a year once a button is clicked
+    let views = $state({lineups: null, positions: null, seasons: null, scoring: null});
+    const viewOf = (id) => views[id] ?? Number(currentYear);
 
     let years = $derived.by(() => {
         const list = [];
@@ -148,26 +150,26 @@
 
         <div class="buttonHolder">
             <Group variant="outlined">
-                <Button class="selectionButtons" onclick={() => views[sec.id] = "allTime"} variant="{views[sec.id] == "allTime" ? "raised" : "outlined"}">
-                    <Label>All-Time</Label>
-                </Button>
                 {#each years as year}
-                    <Button class="selectionButtons" onclick={() => views[sec.id] = year} variant="{views[sec.id] == year ? "raised" : "outlined"}">
+                    <Button class="selectionButtons" onclick={() => views[sec.id] = year} variant="{viewOf(sec.id) == year ? "raised" : "outlined"}">
                         <Label>{year}</Label>
                     </Button>
                 {/each}
+                <Button class="selectionButtons" onclick={() => views[sec.id] = "allTime"} variant="{viewOf(sec.id) == "allTime" ? "raised" : "outlined"}">
+                    <Label>All-Time</Label>
+                </Button>
             </Group>
         </div>
 
-        {#key views[sec.id]}
-            {#if views[sec.id] == "allTime"}
+        {#key viewOf(sec.id)}
+            {#if viewOf(sec.id) == "allTime"}
                 {#if leagueWeekHighs?.length}
                     <AllTimeRecords section={sec.id} transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {allTimeMostCombined} {allTimeLeastCombined} {mostSeasonLongMaxPF} {leastSeasonLongMaxPF} {incompleteYears} {lineupWeeks} {lineupSlots} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
                 {:else}
                     <p class="empty">No records <i>yet</i>...</p>
                 {/if}
             {:else}
-                <PerSeasonRecords section={sec.id} year={views[sec.id]} transactionTotals={totals} {incompleteYears} {lineupWeeks} {lineupSlots} {leagueRosterRecords} {seasonWeekRecords} {leagueTeamManagers} {currentYear} {lastYear} {key} />
+                <PerSeasonRecords section={sec.id} year={viewOf(sec.id)} transactionTotals={totals} {incompleteYears} {lineupWeeks} {lineupSlots} {leagueRosterRecords} {seasonWeekRecords} {leagueTeamManagers} {currentYear} {lastYear} {key} />
             {/if}
         {/key}
     {/each}
