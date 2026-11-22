@@ -63,8 +63,8 @@
         }
     };
 
-    // manager(s) he played for that season, e.g. "gjb31 → koru13" if he changed teams
-    const seasonManagers = (row) => row.rosterIDs.map(rid => teamName(rid, row.year)).join(' → ');
+    // the manager he played for that season; null if he was on more than one roster
+    const seasonManager = (row) => row.rosterIDs.length == 1 ? teamName(row.rosterIDs[0], row.year) : null;
 
     const fmt = (n) => (Math.round(n * 100) / 100).toFixed(2);
 
@@ -98,9 +98,19 @@
         margin: 2em auto 4em;
     }
 
+    /* two tables side by side; they only stack on narrow screens */
     .panel {
-        flex: 1 1 450px;
+        flex: 1 1 380px;
+        min-width: 0;
         max-width: 600px;
+    }
+
+    .tableScroll {
+        overflow-x: auto;
+    }
+
+    .multiple {
+        color: var(--g999);
     }
 
     :global(.playerTable) {
@@ -185,6 +195,7 @@
         <div class="tables">
             <!-- left: best seasons (All-Time) or season leaders -->
             <div class="panel">
+                <div class="tableScroll">
                 <DataTable class="playerTable">
                     <Head>
                         <Row>
@@ -208,7 +219,13 @@
                             <Row>
                                 <Cell>{ix + 1}</Cell>
                                 <Cell>{playerName(row.pid)}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
-                                <Cell>{seasonManagers(row)}</Cell>
+                                <Cell>
+                                    {#if seasonManager(row) !== null}
+                                        {seasonManager(row)}
+                                    {:else}
+                                        <i class="multiple">multiple</i>
+                                    {/if}
+                                </Cell>
                                 {#if display == 'allTime'}
                                     <Cell>{row.year}</Cell>
                                 {/if}
@@ -219,10 +236,12 @@
                         {/each}
                     </Body>
                 </DataTable>
+                </div>
             </div>
 
             <!-- right: best single games -->
             <div class="panel">
+                <div class="tableScroll">
                 <DataTable class="playerTable">
                     <Head>
                         <Row>
@@ -253,6 +272,7 @@
                         {/each}
                     </Body>
                 </DataTable>
+                </div>
             </div>
         </div>
     {/if}
