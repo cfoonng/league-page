@@ -278,6 +278,59 @@
             padding: 0 6px;
         }
     }
+
+    /* shrink tables on phones (same steps as the Team Stats tables) */
+    @media (max-width: 510px) {
+        :global(.playerTable th),
+        :global(.playerTable td) {
+            font-size: 0.8em;
+            padding: 1px 12px;
+        }
+        .playerPhoto {
+            width: 30px;
+            height: 30px;
+            margin-right: 6px;
+        }
+    }
+
+    @media (max-width: 460px) {
+        :global(.playerTable th),
+        :global(.playerTable td) {
+            font-size: 0.6em;
+            padding: 1px 8px;
+        }
+        .playerPhoto {
+            width: 26px;
+            height: 26px;
+            margin-right: 6px;
+        }
+    }
+
+    @media (max-width: 365px) {
+        :global(.playerTable th),
+        :global(.playerTable td) {
+            font-size: 0.5em;
+            padding: 1px 5px;
+        }
+        .playerPhoto {
+            width: 22px;
+            height: 22px;
+            margin-right: 6px;
+        }
+    }
+
+    @media (max-width: 265px) {
+        :global(.playerTable th),
+        :global(.playerTable td) {
+            font-size: 0.4em;
+            padding: 1px 3px;
+        }
+        .playerPhoto {
+            width: 18px;
+            height: 18px;
+            margin-right: 6px;
+        }
+    }
 </style>
 
 {#snippet yearPicker(current, pick, showAllTime = true)}
