@@ -531,7 +531,8 @@
 
 <PositionContributions {lineupWeeks} {lineupSlots} {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} />
 
-<h4>Scoring Records</h4>
+{#if allTime}
+<h4>Best/Worst Seasons</h4>
 
 <div class="fullFlex">
     {#if allTime && key == "regularSeasonData"}
@@ -653,7 +654,15 @@
             </Body>
         </DataTable>
     {/if}
+</div>
+{#if incompleteSet.size}
+    <p class="inProgressNote">* season still in progress</p>
+{/if}
+{/if}
 
+<h4>Scoring Records</h4>
+
+<div class="fullFlex">
     {#if weekRecords && weekRecords.length}
         <DataTable class="recordTable">
             <Head>
@@ -862,10 +871,6 @@
         </DataTable>
     {/if}
 </div>
-
-{#if allTime && incompleteSet.size}
-    <p class="inProgressNote">* season still in progress</p>
-{/if}
 
 <!-- Rankings are hidden for now (set SHOW_RANKINGS = true in the script to bring them back) -->
 {#if SHOW_RANKINGS && !allTime}
