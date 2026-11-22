@@ -4,10 +4,11 @@
     import Button, { Group, Label } from '@smui/button';
     import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
     import LinearProgress from '@smui/linear-progress';
-    import { getLeagueRecords, getLeagueTeamManagers, loadPlayers, waitForAll } from '$lib/utils/helper';
+    import { getLeagueRecords, getLeagueTeamManagers, getLeagueRosters, getNflState, loadPlayers, waitForAll, leagueID } from '$lib/utils/helper';
     import { renderManagerNames } from '$lib/utils/helperFunctions/universalFunctions';
     import { POSITIONS, allPlayerGames, seasonTotals, filterBy, topN } from './playerStatsMath';
     import { findMoves, summarizeMoves } from './startBenchMath';
+    import { JIT_GROUPS, loadAcquisitions, draftLabel, acquisitionLabel, jitRows } from './jitMath';
 
     const TOP_N = 10;
 
@@ -92,6 +93,37 @@
         ? (leagueTeamManagers?.users?.[row.managerID]?.display_name || '')
         : teamName(row.rosterID, row.year);
 
+    // ---- JIT Tracker (season / All-Time = most recent season; no position filter) ----
+    let jitGroup = $state(0);           // experience: 0 rookie, 1 2nd year, 2 3rd year
+    let acquisitions = $state(null);
+    let acqError = $state(false);
+    let currentRosters = $state(null);
+    let refSeason = $state(null);       // season Sleeper's years of experience refer to
+
+    $effect(() => {
+        waitForAll(getLeagueRosters(), getNflState())
+            .then(([rosterData, nflState]) => {
+                currentRosters = rosterData?.rosters || {};
+                refSeason = Number(nflState?.season);
+            })
+            .catch(() => { currentRosters = {}; });
+        loadAcquisitions(leagueID)
+            .then(data => acquisitions = data)
+            .catch(() => acqError = true);
+    });
+
+    let jitSeason = $derived(display == 'allTime' ? years[0] : display);
+    let jitRowsShown = $derived(players && refSeason && jitSeason ? jitRows({
+        seasons, games, players,
+        season: jitSeason,
+        exp: jitGroup,
+        refSeason,
+        currentRosters,
+        isCurrentSeason: jitSeason == years[0],
+        limit: TOP_N,
+    }) : []);
+    const acqText = (fn) => acqError ? '—' : (acquisitions ? fn() : '...');
+
     let seasonTitle = $derived(display == 'allTime' ? 'All-Time Single Season Scoring Records' : `${display} Season Leaders`);
     let gameTitle = $derived(display == 'allTime' ? 'All-Time Single Game Performances' : `${display} Single Game Performances`);
     let posLabel = $derived(position == 'ALL' ? '' : ` (${position})`);
@@ -159,6 +191,12 @@
         font-style: italic;
         font-size: 0.8em;
         color: var(--g999);
+    }
+
+    .jitPanel {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto 4em;
     }
 
     .playerCell {
@@ -380,6 +418,59 @@
                     </div>
                 </div>
             {/each}
+        </div>
+
+        <h4>JIT Tracker</h4>
+
+        <div class="buttonHolder">
+            <Group variant="outlined">
+                {#each JIT_GROUPS as group}
+                    <Button class="selectionButtons" onclick={() => jitGroup = group.exp} variant="{jitGroup == group.exp ? 'raised' : 'outlined'}">
+                        <Label>{group.label}</Label>
+                    </Button>
+                {/each}
+            </Group>
+        </div>
+
+        <div class="jitPanel">
+            <div class="tableScroll">
+            <DataTable class="playerTable">
+                <Head>
+                    <Row>
+                        <Cell class="header tableHeader" colspan=6>
+                            {JIT_GROUPS[jitGroup].label} Leaders ({jitSeason})
+                        </Cell>
+                    </Row>
+                    <Row>
+                        <Cell class="header"></Cell>
+                        <Cell class="header">Player</Cell>
+                        <Cell class="header">Team</Cell>
+                        <Cell class="header">Total Season<br />Points</Cell>
+                        <Cell class="header">Draft</Cell>
+                        <Cell class="header">Acquisition</Cell>
+                    </Row>
+                </Head>
+                <Body>
+                    {#each jitRowsShown as row, ix}
+                        <Row>
+                            <Cell>{ix + 1}</Cell>
+                            <Cell>
+                                <div class="playerCell">
+                                    <div class="playerPhoto" style={playerPhoto(row.pid)}></div>
+                                    <span>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></span>
+                                </div>
+                            </Cell>
+                            <Cell>{teamName(row.rosterID, row.year)}</Cell>
+                            <Cell>{fmt(row.pts)}</Cell>
+                            <Cell>{acqText(() => draftLabel(row.pid, row.year, acquisitions))}</Cell>
+                            <Cell>{acqText(() => acquisitionLabel(row.pid, row.rosterID, row.year, acquisitions))}</Cell>
+                        </Row>
+                    {:else}
+                        <Row><Cell colspan=6>{refSeason ? 'No players yet.' : 'Loading...'}</Cell></Row>
+                    {/each}
+                </Body>
+            </DataTable>
+            </div>
         </div>
     {/if}
 </div>
