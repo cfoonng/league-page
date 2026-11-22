@@ -3,6 +3,7 @@
     import { getLeagueRecords, getLeagueTransactions } from '$lib/utils/helper';
     import AllTimeRecords from './AllTimeRecords.svelte';
     import PerSeasonRecords from './PerSeasonRecords.svelte';
+    import LastUpdated from './LastUpdated.svelte';
 
     let {leagueData, totals, stale, leagueTeamManagers} = $props();;
 
@@ -73,7 +74,20 @@
         refreshRecords();
     }
 
-    let display = $state("allTime");
+    // every section has its own All-Time / year choice
+    const SECTIONS = [
+        {id: 'lineups', title: 'Setting Lineups'},
+        {id: 'positions', title: 'Position Contributions'},
+        {id: 'seasons', title: 'Best/Worst Seasons'},
+        {id: 'scoring', title: 'Scoring Records'},
+    ];
+    let views = $state({lineups: 'allTime', positions: 'allTime', seasons: 'allTime', scoring: 'allTime'});
+
+    let years = $derived.by(() => {
+        const list = [];
+        for(let y = Number(currentYear); y >= Number(lastYear); y--) list.push(y);
+        return list;
+    });
 
 </script>
 
@@ -84,6 +98,11 @@
         max-width: 1200px;
     }
 
+    h4 {
+        text-align: center;
+        margin: 2em 0 1em;
+    }
+
     .empty {
         margin: 10em 0 4em;
         text-align: center;
@@ -92,7 +111,7 @@
     /* Button Styling */
     .buttonHolder {
         text-align: center;
-        margin: 2em 0 0;
+        margin: 0 0 1em;
     }
 
     /* Start button resizing */
@@ -121,25 +140,35 @@
 </style>
 
 <div class="rankingsWrapper">
-
-    <div class="buttonHolder">
-        <Group variant="outlined">
-            <Button class="selectionButtons" onclick={() => display = "allTime"} variant="{display == "allTime" ? "raised" : "outlined"}">
-                <Label>All-Time Records</Label>
-            </Button>
-            <Button class="selectionButtons" onclick={() => display = "season"} variant="{display == "season" ? "raised" : "outlined"}">
-                <Label>Season Records</Label>
-            </Button>
-        </Group>
-    </div>
-
-    {#if display == "allTime"}
-        {#if leagueWeekHighs?.length}
-            <AllTimeRecords transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {allTimeMostCombined} {allTimeLeastCombined} {mostSeasonLongMaxPF} {leastSeasonLongMaxPF} {incompleteYears} {lineupWeeks} {lineupSlots} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
-        {:else}
-            <p class="empty">No records <i>yet</i>...</p>
+    {#each SECTIONS as sec}
+        <h4>{sec.title}</h4>
+        {#if sec.id == 'lineups'}
+            <LastUpdated />
         {/if}
-    {:else}
-        <PerSeasonRecords transactionTotals={totals} {lineupWeeks} {lineupSlots} {leagueRosterRecords} {seasonWeekRecords} {leagueTeamManagers} {currentYear} {lastYear} {key} />
-    {/if}
+
+        <div class="buttonHolder">
+            <Group variant="outlined">
+                <Button class="selectionButtons" onclick={() => views[sec.id] = "allTime"} variant="{views[sec.id] == "allTime" ? "raised" : "outlined"}">
+                    <Label>All-Time</Label>
+                </Button>
+                {#each years as year}
+                    <Button class="selectionButtons" onclick={() => views[sec.id] = year} variant="{views[sec.id] == year ? "raised" : "outlined"}">
+                        <Label>{year}</Label>
+                    </Button>
+                {/each}
+            </Group>
+        </div>
+
+        {#key views[sec.id]}
+            {#if views[sec.id] == "allTime"}
+                {#if leagueWeekHighs?.length}
+                    <AllTimeRecords section={sec.id} transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {allTimeMostCombined} {allTimeLeastCombined} {mostSeasonLongMaxPF} {leastSeasonLongMaxPF} {incompleteYears} {lineupWeeks} {lineupSlots} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
+                {:else}
+                    <p class="empty">No records <i>yet</i>...</p>
+                {/if}
+            {:else}
+                <PerSeasonRecords section={sec.id} year={views[sec.id]} transactionTotals={totals} {incompleteYears} {lineupWeeks} {lineupSlots} {leagueRosterRecords} {seasonWeekRecords} {leagueTeamManagers} {currentYear} {lastYear} {key} />
+            {/if}
+        {/key}
+    {/each}
 </div>

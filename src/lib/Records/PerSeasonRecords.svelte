@@ -1,9 +1,8 @@
 <script>
-    import Button, { Group, Label } from '@smui/button';
     import {round} from '$lib/utils/helper'
   	import RecordsAndRankings from './RecordsAndRankings.svelte';
 
-    export let leagueRosterRecords, seasonWeekRecords, leagueTeamManagers, currentYear, lastYear, transactionTotals, key, lineupWeeks = [], lineupSlots = {};
+    export let leagueRosterRecords, seasonWeekRecords, leagueTeamManagers, currentYear, lastYear, transactionTotals, key, lineupWeeks = [], lineupSlots = {}, incompleteYears = [], year = null, section = 'all';
 
     let yearsObj = {};
     let years = [];
@@ -16,6 +15,7 @@
         while(loopYear >= lastYear) {
             yearsObj[loopYear] = {
                 seasonLongRecords: [],
+                seasonMaxPF: [],
                 winPercentages: [],
                 lineupIQs: [],
                 fptsHistories: [],
@@ -89,6 +89,16 @@
 
                 yearsObj[season.year].lineupIQs.push(lineupIQ)
 
+                // season MaxPF (best possible lineup every week)
+                const games = season.wins + season.ties + season.losses;
+                if(season.potentialPoints && games > 0) {
+                    yearsObj[season.year].seasonMaxPF.push({
+                        rosterID,
+                        maxPF: round(season.potentialPoints),
+                        maxPFPerGame: round(season.potentialPoints / games),
+                    })
+                }
+
                 // add fantasy points histories
                 yearsObj[season.year].fptsHistories.push({
                     rosterID,
@@ -105,6 +115,7 @@
             yearsObj[key].seasonLongRecords = yearsObj[key].seasonLongRecords.sort((a, b) => b.fpts - a.fpts).slice(0, 10);
             
             // sort rankings
+            yearsObj[key].seasonMaxPF.sort((a, b) => b.maxPFPerGame - a.maxPFPerGame);
             yearsObj[key].winPercentages.sort((a, b) => b.percentage - a.percentage);
             yearsObj[key].lineupIQs.sort((a, b) => b.iq - a.iq);
             yearsObj[key].fptsHistories.sort((a, b) => b.fptsFor - a.fptsFor);
@@ -118,52 +129,12 @@
         years.sort((a, b) => b.year - a.year);
     }
 
-    let display = 0;
-
     $: setData(leagueRosterRecords);
+
+    // the season picked by the section's selector (newest season if none)
+    $: display = Math.max(0, years.findIndex(y => y.year == year));
 </script>
 
-<style>
-    /* Button Styling */
-    .buttonHolder {
-        text-align: center;
-        margin: 0;
-    }
-
-    /* Start button resizing */
-
-    @media (max-width: 540px) {
-        :global(.buttonHolder .selectionButtons) {
-            font-size: 0.6em;
-        }
-    }
-
-    @media (max-width: 415px) {
-        :global(.buttonHolder .selectionButtons) {
-            font-size: 0.5em;
-            padding: 0 6px;
-        }
-    }
-
-    @media (max-width: 315px) {
-        :global(.buttonHolder .selectionButtons) {
-            font-size: 0.45em;
-            padding: 0 3px;
-        }
-    }
-
-    /* End button resizing */
-</style>
-
-<div class="buttonHolder">
-    <Group variant="outlined">
-        {#each years as {year}, ix}
-            <Button class="selectionButtons" onclick={() => display = ix} variant="{display == ix ? "raised" : "outlined"}">
-                <Label>{year}</Label>
-            </Button>
-        {/each}
-    </Group>
-</div>
 
 <RecordsAndRankings
     waiversData={years[display].waiversData}
@@ -180,6 +151,9 @@
     closestMatchups={years[display].closestMatchups}
     {lineupWeeks}
     {lineupSlots}
+    seasonLongMaxPF={years[display].seasonMaxPF}
+    {incompleteYears}
+    {section}
     prefix={years[display].year}
     {leagueTeamManagers}
     {key}

@@ -7,13 +7,15 @@
 	import BarChart from '$lib/BarChart.svelte';
 	import LineupEfficiencyChart from './LineupEfficiencyChart.svelte';
 	import AchieverChart from './AchieverChart.svelte';
-	import LastUpdated from './LastUpdated.svelte';
 	import BestBallTable from './BestBallTable.svelte';
 	import ManagerChangesTable from './ManagerChangesTable.svelte';
 	import PositionContributions from './PositionContributions.svelte';
 	import WorstMaxPFTable from './WorstMaxPFTable.svelte';
 
-    export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], lineupWeeks = [], lineupSlots = {}, seasonLongMaxPF = [], seasonLongMaxPFLows = [], incompleteYears = [], allTime=false, leagueTeamManagers;
+    export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], lineupWeeks = [], lineupSlots = {}, seasonLongMaxPF = [], seasonLongMaxPFLows = [], incompleteYears = [], allTime=false, leagueTeamManagers, section = 'all';
+
+    // which section to draw: 'lineups', 'positions', 'seasons', 'scoring' (or 'all')
+    $: show = (name) => section == 'all' || section == name;
 
     // Rankings section (chart + Lineup IQ / Win % / Fantasy Points / Transactions tables) is hidden for now
     const SHOW_RANKINGS = false;
@@ -504,9 +506,7 @@
     /* END ranking table resizing */
 </style>
 
-<h4>Setting Lineups</h4>
-<LastUpdated />
-
+{#if show('lineups')}
 <div class="settingLineups">
     <div class="settingLineupsPanel">
         {#if lineupIQs && lineupIQs.some(l => l.potentialPoints)}
@@ -528,13 +528,13 @@
     </div>
 </div>
 
-<h4>Position Contributions</h4>
+{/if}
 
+{#if show('positions')}
 <PositionContributions {lineupWeeks} {lineupSlots} {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} />
+{/if}
 
-{#if allTime}
-<h4>Best/Worst Seasons</h4>
-
+{#if show('seasons') && allTime}
 <div class="fullFlex">
     {#if allTime && key == "regularSeasonData"}
         <DataTable class="recordTable">
@@ -661,8 +661,71 @@
 {/if}
 {/if}
 
-<h4>Scoring Records</h4>
+<!-- one season: every team's season points and season MaxPF -->
+{#if show('seasons') && !allTime}
+<div class="fullFlex">
+    {#if seasonLongRecords && seasonLongRecords.length}
+        <DataTable class="recordTable">
+            <Head>
+                <Row>
+                    <Cell class="header headerPrimary" colspan=4>{prefix} Season Points<span class="italic">Ranked by PPG</span></Cell>
+                </Row>
+                <Row>
+                    <Cell class="header rank"></Cell>
+                    <Cell class="header">Manager</Cell>
+                    <Cell class="header">Total Points</Cell>
+                    <Cell class="header">PPG</Cell>
+                </Row>
+            </Head>
+            <Body>
+                {#each seasonLongRecords.slice().sort((a, b) => b.fptsPerGame - a.fptsPerGame) as seasonRow, ix}
+                    <Row>
+                        <Cell class="rank">{ix + 1}</Cell>
+                        <Cell class="cellName" onclick={() => gotoManager({year: prefix, leagueTeamManagers, rosterID: seasonRow.rosterID})}>
+                            <RecordTeam {leagueTeamManagers} rosterID={seasonRow.rosterID} year={prefix} />
+                        </Cell>
+                        <Cell>{round(seasonRow.fpts)}{incompleteSet.has(Number(prefix)) ? '*' : ''}</Cell>
+                        <Cell>{seasonRow.fptsPerGame}{incompleteSet.has(Number(prefix)) ? '*' : ''}</Cell>
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    {/if}
 
+    {#if seasonLongMaxPF && seasonLongMaxPF.length}
+        <DataTable class="recordTable">
+            <Head>
+                <Row>
+                    <Cell class="header headerPrimary" colspan=4>{prefix} Season MaxPF<span class="italic">Ranked by MaxPF per game</span></Cell>
+                </Row>
+                <Row>
+                    <Cell class="header rank"></Cell>
+                    <Cell class="header">Manager</Cell>
+                    <Cell class="header">Total MaxPF</Cell>
+                    <Cell class="header">MaxPF/G</Cell>
+                </Row>
+            </Head>
+            <Body>
+                {#each seasonLongMaxPF as maxPFRow, ix}
+                    <Row>
+                        <Cell class="rank">{ix + 1}</Cell>
+                        <Cell class="cellName" onclick={() => gotoManager({year: prefix, leagueTeamManagers, rosterID: maxPFRow.rosterID})}>
+                            <RecordTeam {leagueTeamManagers} rosterID={maxPFRow.rosterID} year={prefix} />
+                        </Cell>
+                        <Cell>{round(maxPFRow.maxPF)}{incompleteSet.has(Number(prefix)) ? '*' : ''}</Cell>
+                        <Cell>{maxPFRow.maxPFPerGame}{incompleteSet.has(Number(prefix)) ? '*' : ''}</Cell>
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    {/if}
+</div>
+{#if incompleteSet.has(Number(prefix))}
+    <p class="inProgressNote">* season still in progress</p>
+{/if}
+{/if}
+
+{#if show('scoring')}
 <div class="fullFlex">
     {#if weekRecords && weekRecords.length}
         <DataTable class="recordTable">
@@ -847,9 +910,10 @@
         </DataTable>
     {/if}
 </div>
+{/if}
 
 <!-- Rankings are hidden for now (set SHOW_RANKINGS = true in the script to bring them back) -->
-{#if SHOW_RANKINGS && !allTime}
+{#if SHOW_RANKINGS && !allTime && show('scoring')}
 <h4>{prefix} {key == "playoffData" ? "Playoff " : ""}Rankings</h4>
 
 {#if graphs.length}

@@ -2,7 +2,7 @@
     import {round} from '$lib/utils/helper'
   	import RecordsAndRankings from './RecordsAndRankings.svelte';
 
-    export let key, leagueManagerRecords, leagueTeamManagers, leagueWeekHighs, leagueWeekLows, allTimeBiggestBlowouts, allTimeClosestMatchups, allTimeMostCombined = [], allTimeLeastCombined = [], mostSeasonLongMaxPF = [], leastSeasonLongMaxPF = [], incompleteYears = [], lineupWeeks = [], lineupSlots = {}, mostSeasonLongPoints, leastSeasonLongPoints, transactionTotals;
+    export let key, leagueManagerRecords, leagueTeamManagers, leagueWeekHighs, leagueWeekLows, allTimeBiggestBlowouts, allTimeClosestMatchups, allTimeMostCombined = [], allTimeLeastCombined = [], mostSeasonLongMaxPF = [], leastSeasonLongMaxPF = [], incompleteYears = [], lineupWeeks = [], lineupSlots = {}, mostSeasonLongPoints, leastSeasonLongPoints, transactionTotals, section = 'all';
 
     let winPercentages = [];
     let lineupIQs = [];
@@ -109,6 +109,7 @@
     {waiversData}
     prefix="All-Time"
     allTime={true}
+    {section}
     {leagueTeamManagers}
     {key}
 />
