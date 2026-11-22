@@ -69,6 +69,12 @@
     // the manager he played for that season; null if he was on more than one roster
     const seasonManager = (row) => row.rosterIDs.length == 1 ? teamName(row.rosterIDs[0], row.year) : null;
 
+    // split at the first space, e.g. "Ja'Marr Chase" -> ["Ja'Marr", "Chase"], "Amon-Ra St. Brown" -> ["Amon-Ra", "St. Brown"]
+    const splitName = (text) => {
+        const i = (text || '').indexOf(' ');
+        return i < 0 ? [text, ''] : [text.slice(0, i), text.slice(i + 1)];
+    };
+
     const fmt = (n) => (Math.round(n * 100) / 100).toFixed(2);
 
     // ---- Start/Bench This MF (season / all-time only, no position filter) ----
@@ -224,14 +230,14 @@
                             {#if display == 'allTime'}
                                 <Cell class="header">Year</Cell>
                             {/if}
-                            <Cell class="header">Total Points</Cell>
+                            <Cell class="header">Total<br />Points</Cell>
                         </Row>
                     </Head>
                     <Body>
                         {#each seasonRows as row, ix}
                             <Row>
                                 <Cell>{ix + 1}</Cell>
-                                <Cell>{playerName(row.pid)}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
+                                <Cell>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
                                 <Cell>
                                     {#if seasonManager(row) !== null}
                                         {seasonManager(row)}
@@ -267,7 +273,7 @@
                             <Cell class="header"></Cell>
                             <Cell class="header">Player</Cell>
                             <Cell class="header">Manager</Cell>
-                            <Cell class="header">Year &amp; Week</Cell>
+                            <Cell class="header">Year &amp;<br />Week</Cell>
                             <Cell class="header">Points</Cell>
                         </Row>
                     </Head>
@@ -275,7 +281,7 @@
                         {#each gameRows as row, ix}
                             <Row>
                                 <Cell>{ix + 1}</Cell>
-                                <Cell>{playerName(row.pid)}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
+                                <Cell>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
                                 <Cell>{teamName(row.rosterID, row.year)}</Cell>
                                 <Cell>{row.year} Week {row.week}</Cell>
                                 <Cell>{fmt(row.pts)}</Cell>
@@ -306,16 +312,16 @@
                                 <Cell class="header"></Cell>
                                 <Cell class="header">Player</Cell>
                                 <Cell class="header">Manager</Cell>
-                                <Cell class="header">Pts Missed</Cell>
-                                <Cell class="header">PPG Missed</Cell>
-                                <Cell class="header">{gamesLabel}</Cell>
+                                <Cell class="header">Pts<br />Missed</Cell>
+                                <Cell class="header">PPG<br />Missed</Cell>
+                                <Cell class="header">{splitName(gamesLabel)[0]}<br />{splitName(gamesLabel)[1]}</Cell>
                             </Row>
                         </Head>
                         <Body>
                             {#each moveRows as row, ix}
                                 <Row>
                                     <Cell>{ix + 1}</Cell>
-                                    <Cell>{playerName(row.pid)}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
+                                    <Cell>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
                                     <Cell>{moveManager(row)}</Cell>
                                     <Cell>{fmt(row.ptsMissed)}</Cell>
                                     <Cell>{fmt(row.ppgMissed)}</Cell>
