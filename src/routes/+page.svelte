@@ -56,10 +56,16 @@
         }
     }
 
-    .transactions {
-        display: block;
+    /* Team Value table and trades/waivers run the full page width under the top section */
+    .fullWidth {
+        position: relative;
+        z-index: 1;
         width: 95%;
-        margin: 10px auto;
+        margin: 0 auto;
+    }
+
+    .homeTransactions {
+        margin: 1em auto 3em;
     }
 
     .center {
@@ -148,7 +154,6 @@
                 <HomePost />
             {/if}
         </div>
-        <TeamValue />
     </div>
     
     <div class="leagueData">
@@ -191,8 +196,14 @@
             {/await}
         </div>
 
-        <div class="transactions" >
-            <Transactions />
-        </div>
     </div>
+</div>
+
+<!-- full-width sections below the intro + champ -->
+<div class="fullWidth">
+    <TeamValue />
+</div>
+
+<div class="fullWidth homeTransactions">
+    <Transactions />
 </div>
