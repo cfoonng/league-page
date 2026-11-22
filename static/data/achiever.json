@@ -1,0 +1,191 @@
+{
+ "updated": "2026-11-21",
+ "allTime": [
+  {
+   "managerID": "1265035377249374208",
+   "team": "Marcusablock",
+   "ppg": 1.76,
+   "games": 24
+  },
+  {
+   "managerID": "1264841066129932288",
+   "team": "Matt2001Martin",
+   "ppg": 0.04,
+   "games": 24
+  },
+  {
+   "managerID": "1265033826942337024",
+   "team": "FatherK11",
+   "ppg": -0.87,
+   "games": 24
+  },
+  {
+   "managerID": "1003557305339768832",
+   "team": "gjb31",
+   "ppg": -2.04,
+   "games": 24
+  },
+  {
+   "managerID": "999465012592803840",
+   "team": "Libermaniacjr",
+   "ppg": -2.19,
+   "games": 24
+  },
+  {
+   "managerID": "1265051241960964096",
+   "team": "confonger",
+   "ppg": -3.71,
+   "games": 24
+  },
+  {
+   "managerID": "1265959180385128448",
+   "team": "koru13",
+   "ppg": -4.7,
+   "games": 24
+  },
+  {
+   "managerID": "1127702793260810240",
+   "team": "CeceRAIDERS",
+   "ppg": -10.2,
+   "games": 24
+  },
+  {
+   "managerID": "1265769112982786048",
+   "team": "CheckNate10",
+   "ppg": -10.53,
+   "games": 24
+  },
+  {
+   "managerID": "852680448239869952",
+   "team": "maxabroms",
+   "ppg": -13.61,
+   "games": 24
+  }
+ ],
+ "seasons": {
+  "2025": [
+   {
+    "managerID": "1265051241960964096",
+    "team": "confonger",
+    "ppg": -1.64,
+    "games": 14
+   },
+   {
+    "managerID": "1265033826942337024",
+    "team": "FatherK11",
+    "ppg": -3.39,
+    "games": 14
+   },
+   {
+    "managerID": "1265035377249374208",
+    "team": "Marcusablock",
+    "ppg": -4.38,
+    "games": 14
+   },
+   {
+    "managerID": "1265959180385128448",
+    "team": "koru13",
+    "ppg": -6.59,
+    "games": 14
+   },
+   {
+    "managerID": "1264841066129932288",
+    "team": "Matt2001Martin",
+    "ppg": -6.98,
+    "games": 14
+   },
+   {
+    "managerID": "1265769112982786048",
+    "team": "CheckNate10",
+    "ppg": -8.36,
+    "games": 14
+   },
+   {
+    "managerID": "999465012592803840",
+    "team": "Libermaniacjr",
+    "ppg": -8.42,
+    "games": 14
+   },
+   {
+    "managerID": "1003557305339768832",
+    "team": "gjb31",
+    "ppg": -12.9,
+    "games": 14
+   },
+   {
+    "managerID": "852680448239869952",
+    "team": "maxabroms",
+    "ppg": -17.3,
+    "games": 14
+   },
+   {
+    "managerID": "1127702793260810240",
+    "team": "CeceRAIDERS",
+    "ppg": -17.75,
+    "games": 14
+   }
+  ],
+  "2026": [
+   {
+    "managerID": "1003557305339768832",
+    "team": "gjb31",
+    "ppg": 13.17,
+    "games": 10
+   },
+   {
+    "managerID": "1265035377249374208",
+    "team": "Marcusablock",
+    "ppg": 10.35,
+    "games": 10
+   },
+   {
+    "managerID": "1264841066129932288",
+    "team": "Matt2001Martin",
+    "ppg": 9.86,
+    "games": 10
+   },
+   {
+    "managerID": "999465012592803840",
+    "team": "Libermaniacjr",
+    "ppg": 6.52,
+    "games": 10
+   },
+   {
+    "managerID": "1265033826942337024",
+    "team": "FatherK11",
+    "ppg": 2.65,
+    "games": 10
+   },
+   {
+    "managerID": "1127702793260810240",
+    "team": "CeceRAIDERS",
+    "ppg": 0.37,
+    "games": 10
+   },
+   {
+    "managerID": "1265959180385128448",
+    "team": "koru13",
+    "ppg": -2.06,
+    "games": 10
+   },
+   {
+    "managerID": "1265051241960964096",
+    "team": "confonger",
+    "ppg": -6.59,
+    "games": 10
+   },
+   {
+    "managerID": "852680448239869952",
+    "team": "maxabroms",
+    "ppg": -8.43,
+    "games": 10
+   },
+   {
+    "managerID": "1265769112982786048",
+    "team": "CheckNate10",
+    "ppg": -13.56,
+    "games": 10
+   }
+  ]
+ }
+}
