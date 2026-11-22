@@ -4,7 +4,7 @@
     // Data comes from static/data/achiever.json, exported from the notebook.
     import { getAvatarFromTeamManagers, renderManagerNames, gotoManager } from '$lib/utils/helperFunctions/universalFunctions';
 
-    let { leagueTeamManagers, allTime = false, year = null } = $props();
+    let { leagueTeamManagers, allTime = false, year = null, prefix = '' } = $props();
 
     let achieverData = $state(null);
     let loadError = $state(false);
@@ -199,7 +199,7 @@
 </style>
 
 <div class="chartWrapper">
-    <div class="chartHeader">Overachiever/Underachiever</div>
+    <div class="chartHeader">{prefix} Overachiever/Underachiever</div>
 
     {#if loadError}
         <p class="message">No overachiever data uploaded yet.</p>

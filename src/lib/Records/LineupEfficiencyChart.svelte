@@ -4,7 +4,7 @@
     // Styled to match the home page's Rest of Season Power Rankings chart.
     import { getAvatarFromTeamManagers, renderManagerNames, gotoManager } from '$lib/utils/helperFunctions/universalFunctions';
 
-    let { lineupIQs = [], leagueTeamManagers, year = null } = $props();
+    let { lineupIQs = [], leagueTeamManagers, year = null, prefix = '' } = $props();
 
     const colors = [
         "--barChartOne",
@@ -183,7 +183,7 @@
 </style>
 
 <div class="chartWrapper">
-    <div class="chartHeader">Manager Lineup Efficiency</div>
+    <div class="chartHeader">{prefix} Manager Lineup Efficiency</div>
     {#each rows as row, ix}
         <div class="barParent">
             <img alt="team avatar" onclick={() => goto(row)} style="border-color: var({colors[ix % colors.length]});" class="teamAvatar clickable" src={avatarFor(row)} />

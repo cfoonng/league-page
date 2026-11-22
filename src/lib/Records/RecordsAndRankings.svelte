@@ -8,6 +8,7 @@
 	import LineupEfficiencyChart from './LineupEfficiencyChart.svelte';
 	import AchieverChart from './AchieverChart.svelte';
 	import LastUpdated from './LastUpdated.svelte';
+	import BestBallTable from './BestBallTable.svelte';
 
     export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], allTime=false, leagueTeamManagers;
 
@@ -295,6 +296,10 @@
         max-width: 1200px;
     }
 
+    .settingLineups.secondRow {
+        margin-top: 2em;
+    }
+
     .settingLineupsPanel {
         flex: 1 1 450px;
         max-width: 600px;
@@ -491,11 +496,21 @@
 <div class="settingLineups">
     <div class="settingLineupsPanel">
         {#if lineupIQs && lineupIQs.some(l => l.potentialPoints)}
-            <LineupEfficiencyChart {lineupIQs} {leagueTeamManagers} year={allTime ? null : prefix} />
+            <LineupEfficiencyChart {lineupIQs} {leagueTeamManagers} year={allTime ? null : prefix} {prefix} />
         {/if}
     </div>
     <div class="settingLineupsPanel">
-        <AchieverChart {leagueTeamManagers} {allTime} year={allTime ? null : prefix} />
+        <AchieverChart {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} />
+    </div>
+</div>
+
+<!-- second row: perfect-lineups table under the efficiency chart, right side reserved -->
+<div class="settingLineups secondRow">
+    <div class="settingLineupsPanel">
+        <BestBallTable {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} />
+    </div>
+    <div class="settingLineupsPanel">
+        <!-- right-hand panel: reserved for the next item -->
     </div>
 </div>
 
