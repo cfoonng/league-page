@@ -135,6 +135,18 @@ export const jitRows = ({seasons, games, players, season, exp, refSeason, curren
         }
     }
 
+    // overall and position ranks among every player's points that season
+    const ranked = seasons.filter(r => r.year == season).sort((a, b) => b.pts - a.pts);
+    const overallRank = {};
+    const posRank = {};
+    const posCount = {};
+    ranked.forEach((r, i) => {
+        overallRank[r.pid] = i + 1;
+        const pos = players?.[r.pid]?.pos || '';
+        posCount[pos] = (posCount[pos] || 0) + 1;
+        posRank[r.pid] = `${pos}${posCount[pos]}`;
+    });
+
     return seasons
         .filter(r => r.year == season)
         .filter(r => {
@@ -147,5 +159,7 @@ export const jitRows = ({seasons, games, players, season, exp, refSeason, curren
         .map(r => ({
             ...r,
             rosterID: currentOwner[r.pid] ?? lastRoster[r.pid]?.rosterID ?? null,
+            posRank: posRank[r.pid],
+            overallRank: overallRank[r.pid],
         }));
 };

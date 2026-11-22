@@ -449,7 +449,7 @@
             <DataTable class="playerTable">
                 <Head>
                     <Row>
-                        <Cell class="header tableHeader" colspan=6>
+                        <Cell class="header tableHeader" colspan=8>
                             {JIT_GROUPS[jitGroup].label} Leaders ({jitSeason})
                         </Cell>
                     </Row>
@@ -458,6 +458,8 @@
                         <Cell class="header">Player</Cell>
                         <Cell class="header">Team</Cell>
                         <Cell class="header">Total Season<br />Points</Cell>
+                        <Cell class="header">Position<br />Rank</Cell>
+                        <Cell class="header">Overall<br />Rank</Cell>
                         <Cell class="header">Draft</Cell>
                         <Cell class="header">Acquisition</Cell>
                     </Row>
@@ -474,11 +476,13 @@
                             </Cell>
                             <Cell>{teamName(row.rosterID, row.year)}</Cell>
                             <Cell>{fmt(row.pts)}</Cell>
+                            <Cell>{row.posRank}</Cell>
+                            <Cell>{row.overallRank}</Cell>
                             <Cell>{acqText(() => draftLabel(row.pid, row.year, acquisitions))}</Cell>
                             <Cell>{acqText(() => acquisitionLabel(row.pid, row.rosterID, row.year, acquisitions))}</Cell>
                         </Row>
                     {:else}
-                        <Row><Cell colspan=6>{refSeason ? 'No players yet.' : 'Loading...'}</Cell></Row>
+                        <Row><Cell colspan=8>{refSeason ? 'No players yet.' : 'Loading...'}</Cell></Row>
                     {/each}
                 </Body>
             </DataTable>
