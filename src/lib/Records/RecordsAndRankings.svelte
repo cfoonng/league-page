@@ -8,6 +8,12 @@
 
     export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], allTime=false, leagueTeamManagers;
 
+    // Rankings section (chart + Lineup IQ / Win % / Fantasy Points / Transactions tables) is hidden for now
+    const SHOW_RANKINGS = false;
+
+    // How many blowouts / narrowest wins to show: 10 for all-time, 5 for a single season
+    $: matchupRecordCount = allTime ? 10 : 5;
+
     let graphs = [];
     let curTable = 0;
     let curGraph = 0;
@@ -594,7 +600,7 @@
                 </Row>
             </Head>
             <Body>
-                {#each blowouts as blowout, ix}
+                {#each blowouts.slice(0, matchupRecordCount) as blowout, ix}
                     <Row>
                         <Cell class="rank">{ix + 1}</Cell>
                         <Cell class="cellName differentialName">
@@ -632,7 +638,7 @@
                 </Row>
             </Head>
             <Body>
-                {#each closestMatchups as closestMatchup, ix}
+                {#each closestMatchups.slice(0, matchupRecordCount) as closestMatchup, ix}
                     <Row>
                         <Cell class="rank">{ix + 1}</Cell>
                         <Cell class="cellName differentialName">
@@ -733,8 +739,8 @@
     {/if}
 </div>
 
-<!-- Rankings are only shown on Season Records, not All-Time Records -->
-{#if !allTime}
+<!-- Rankings are hidden for now (set SHOW_RANKINGS = true in the script to bring them back) -->
+{#if SHOW_RANKINGS && !allTime}
 <h4>{prefix} {key == "playoffData" ? "Playoff " : ""}Rankings</h4>
 
 {#if graphs.length}
