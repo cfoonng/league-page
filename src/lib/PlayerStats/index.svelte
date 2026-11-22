@@ -72,7 +72,7 @@
     let seasonRows = $derived(topN(filterBy(seasons, {year: selectedYear, position, positionOf}), TOP_N));
     let allGames = $derived([...games, ...playoffGames]);
     let gameRows = $derived(topN(filterBy(allGames.filter(g => g.started), {year: selectedYear, position, positionOf}), TOP_N));
-    let benchRows = $derived(topN(filterBy(allGames.filter(g => !g.started), {year: selectedYear, position, positionOf}), TOP_N));
+    let benchGameRows = $derived(topN(filterBy(allGames.filter(g => !g.started), {year: selectedYear, position, positionOf}), TOP_N));
 
 
     const playerName = (pid) => {
@@ -415,7 +415,7 @@
 
             <!-- right: best single games (starts), then best bench games -->
             <div class="panel">
-                {#each [[gameTitle, gameRows, 'Regular season and playoffs, starters only'], [benchTitle, benchRows, 'Regular season and playoffs, points left on the bench']] as [title, rows, note]}
+                {#each [[gameTitle, gameRows, 'Regular season and playoffs, starters only'], [benchTitle, benchGameRows, 'Regular season and playoffs, points left on the bench']] as [title, rows, note]}
                 <div class="tableScroll stacked">
                 <DataTable class="playerTable">
                     <Head>
