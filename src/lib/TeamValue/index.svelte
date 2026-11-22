@@ -203,6 +203,47 @@
             padding: 0 6px;
         }
     }
+
+    /* shrink the table on smaller screens (it has 10 columns, so it starts sooner) */
+    @media (max-width: 800px) {
+        :global(.valueTable th),
+        :global(.valueTable td) {
+            font-size: 0.85em;
+            padding: 1px 10px;
+        }
+    }
+
+    @media (max-width: 650px) {
+        :global(.valueTable th),
+        :global(.valueTable td) {
+            font-size: 0.7em;
+            padding: 1px 8px;
+        }
+    }
+
+    @media (max-width: 510px) {
+        :global(.valueTable th),
+        :global(.valueTable td) {
+            font-size: 0.6em;
+            padding: 1px 6px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        :global(.valueTable th),
+        :global(.valueTable td) {
+            font-size: 0.5em;
+            padding: 1px 4px;
+        }
+    }
+
+    @media (max-width: 300px) {
+        :global(.valueTable th),
+        :global(.valueTable td) {
+            font-size: 0.4em;
+            padding: 1px 3px;
+        }
+    }
 </style>
 
 <div class="teamValue">
