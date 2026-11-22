@@ -246,12 +246,14 @@
     }
 </style>
 
-{#snippet yearPicker(current, pick)}
+{#snippet yearPicker(current, pick, showAllTime = true)}
     <div class="buttonHolder">
         <Group variant="outlined">
+            {#if showAllTime}
             <Button class="selectionButtons" onclick={() => pick('allTime')} variant="{current == 'allTime' ? 'raised' : 'outlined'}">
                 <Label>All-Time</Label>
             </Button>
+            {/if}
             {#each years as year}
                 <Button class="selectionButtons" onclick={() => pick(year)} variant="{current == year ? 'raised' : 'outlined'}">
                     <Label>{year}</Label>
@@ -430,7 +432,7 @@
         </div>
 
         <h4>JIT Tracker</h4>
-        {@render yearPicker(jitDisplay, (v) => jitDisplay = v)}
+        {@render yearPicker(jitDisplay == 'allTime' ? years[0] : jitDisplay, (v) => jitDisplay = v, false)}
 
         <div class="buttonHolder">
             <Group variant="outlined">
