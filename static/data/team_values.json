@@ -7,131 +7,131 @@
    "managerID": "1264841066129932288",
    "rosterID": 1,
    "team": "Matt2001Martin",
-   "total": 67550,
+   "total": 82534,
    "players": 67550,
    "starters": 55342,
    "QB": 12082,
    "RB": 10566,
    "WR": 17635,
    "TE": 3310,
-   "picks": 0
+   "picks": 14984
   },
   {
    "managerID": "1003557305339768832",
    "rosterID": 2,
    "team": "gjb31",
-   "total": 64557,
+   "total": 75506,
    "players": 64557,
    "starters": 52260,
    "QB": 11994,
    "RB": 9062,
    "WR": 18810,
    "TE": 4140,
-   "picks": 0
+   "picks": 10949
   },
   {
    "managerID": "1265033826942337024",
    "rosterID": 3,
    "team": "FatherK11",
-   "total": 63938,
+   "total": 75879,
    "players": 63938,
    "starters": 54853,
    "QB": 7239,
    "RB": 15548,
    "WR": 13876,
    "TE": 6686,
-   "picks": 0
+   "picks": 11941
   },
   {
    "managerID": "1265769112982786048",
    "rosterID": 8,
    "team": "CheckNate10",
-   "total": 63157,
+   "total": 74772,
    "players": 63157,
    "starters": 50978,
    "QB": 15480,
    "RB": 8878,
    "WR": 13471,
    "TE": 4302,
-   "picks": 0
+   "picks": 11615
   },
   {
    "managerID": "1265035377249374208",
    "rosterID": 5,
    "team": "Marcusablock",
-   "total": 61764,
+   "total": 71998,
    "players": 61764,
    "starters": 50590,
    "QB": 11970,
    "RB": 10328,
    "WR": 16019,
    "TE": 2542,
-   "picks": 0
+   "picks": 10234
   },
   {
    "managerID": "999465012592803840",
    "rosterID": 4,
    "team": "Libermaniacjr",
-   "total": 60946,
+   "total": 75930,
    "players": 60946,
    "starters": 50356,
    "QB": 10737,
    "RB": 14614,
    "WR": 14134,
    "TE": 3078,
-   "picks": 0
+   "picks": 14984
   },
   {
    "managerID": "1265959180385128448",
    "rosterID": 10,
    "team": "koru13",
-   "total": 59287,
+   "total": 73703,
    "players": 59287,
    "starters": 50638,
    "QB": 9988,
    "RB": 8948,
    "WR": 18960,
    "TE": 3646,
-   "picks": 0
+   "picks": 14416
   },
   {
    "managerID": "1127702793260810240",
    "rosterID": 7,
    "team": "CeceRAIDERS",
-   "total": 51478,
+   "total": 65888,
    "players": 51478,
    "starters": 41680,
    "QB": 7118,
    "RB": 9601,
    "WR": 8096,
    "TE": 9166,
-   "picks": 0
+   "picks": 14410
   },
   {
    "managerID": "1265051241960964096",
    "rosterID": 6,
    "team": "confonger",
-   "total": 49174,
+   "total": 80496,
    "players": 49174,
    "starters": 39068,
    "QB": 10872,
    "RB": 5756,
    "WR": 10759,
    "TE": 4745,
-   "picks": 0
+   "picks": 31322
   },
   {
    "managerID": "852680448239869952",
    "rosterID": 9,
    "team": "maxabroms",
-   "total": 43419,
+   "total": 58403,
    "players": 43419,
    "starters": 33863,
    "QB": 12128,
    "RB": 6938,
    "WR": 6050,
    "TE": 2705,
-   "picks": 0
+   "picks": 14984
   }
  ]
 }
