@@ -5,14 +5,15 @@ export const POSITIONS = ['ALL', 'QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
 
 /**
  * Every rostered player's game in every regular season week (starters and bench).
- * @returns {Object[]} {pid, pts, year, week, rosterID}
+ * @returns {Object[]} {pid, pts, year, week, rosterID, started}
  */
 export const allPlayerGames = (lineupWeeks) => {
     const games = [];
     for(const entry of lineupWeeks || []) {
+        const starters = new Set(entry.starters || []);
         for(const [pid, pts] of Object.entries(entry.playersPoints || {})) {
             if(pts === null || pts === undefined) continue;
-            games.push({pid, pts: Number(pts) || 0, year: entry.year, week: entry.week, rosterID: entry.rosterID});
+            games.push({pid, pts: Number(pts) || 0, year: entry.year, week: entry.week, rosterID: entry.rosterID, started: starters.has(pid)});
         }
     }
     return games;

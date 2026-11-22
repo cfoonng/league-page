@@ -70,7 +70,9 @@
     let playoffGames = $derived(allPlayerGames(playoffWeeks).map(g => ({...g, playoff: true})));
     let selectedYear = $derived(display == 'allTime' ? null : display);
     let seasonRows = $derived(topN(filterBy(seasons, {year: selectedYear, position, positionOf}), TOP_N));
-    let gameRows = $derived(topN(filterBy([...games, ...playoffGames], {year: selectedYear, position, positionOf}), TOP_N));
+    let allGames = $derived([...games, ...playoffGames]);
+    let gameRows = $derived(topN(filterBy(allGames.filter(g => g.started), {year: selectedYear, position, positionOf}), TOP_N));
+    let benchRows = $derived(topN(filterBy(allGames.filter(g => !g.started), {year: selectedYear, position, positionOf}), TOP_N));
 
 
     const playerName = (pid) => {
@@ -150,6 +152,7 @@
 
     let seasonTitle = $derived(display == 'allTime' ? 'All-Time Single Season Scoring Records' : `${display} Season Leaders`);
     let gameTitle = $derived(display == 'allTime' ? 'All-Time Single Game Performances' : `${display} Single Game Performances`);
+    let benchTitle = $derived(display == 'allTime' ? 'All-Time Best Bench Performances' : `${display} Best Bench Performances`);
     let posLabel = $derived(position == 'ALL' ? '' : ` (${position})`);
 </script>
 
@@ -187,6 +190,11 @@
 
     .tableScroll {
         overflow-x: auto;
+    }
+
+    /* two tables stacked in one column */
+    .stacked + .stacked {
+        margin-top: 2em;
     }
 
 
@@ -347,15 +355,16 @@
                 </div>
             </div>
 
-            <!-- right: best single games -->
+            <!-- right: best single games (starts), then best bench games -->
             <div class="panel">
-                <div class="tableScroll">
+                {#each [[gameTitle, gameRows, 'Regular season and playoffs, starters only'], [benchTitle, benchRows, 'Regular season and playoffs, points left on the bench']] as [title, rows, note]}
+                <div class="tableScroll stacked">
                 <DataTable class="playerTable">
                     <Head>
                         <Row>
                             <Cell class="header tableHeader" colspan=5>
-                                {gameTitle}{posLabel}
-                                <span class="subTitle">Regular season and playoffs, starters and bench</span>
+                                {title}{posLabel}
+                                <span class="subTitle">{note}</span>
                             </Cell>
                         </Row>
                         <Row>
@@ -367,7 +376,7 @@
                         </Row>
                     </Head>
                     <Body>
-                        {#each gameRows as row, ix}
+                        {#each rows as row, ix}
                             <Row>
                                 <Cell>{ix + 1}</Cell>
                                 <Cell>
@@ -386,6 +395,7 @@
                     </Body>
                 </DataTable>
                 </div>
+                {/each}
             </div>
         </div>
 
