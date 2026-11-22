@@ -52,16 +52,19 @@
 </script>
 
 <style>
-    h6 {
-        font-weight: 400;
-        width: 100%;
+    /* blue title bar, matching the records tables' headers */
+    .chartHeader {
+        background-color: var(--headerPrimary);
         text-align: center;
-        margin: 0 0 1em;
+        font-weight: 500;
+        font-size: 0.875rem;
+        padding: 1em 0.5em;
+        margin-bottom: 1em;
     }
 
     .chartWrapper {
         background-color: var(--fff);
-        padding: 1em 0 0.5em;
+        padding: 0 0 0.5em;
         margin: 0 auto;
         box-shadow: 0px 3px 3px -2px var(--boxShadowOne), 0px 3px 4px 0px var(--boxShadowTwo), 0px 1px 8px 0px var(--boxShadowThree);
     }
@@ -178,8 +181,8 @@
     }
 </style>
 
-<h6>Manager Lineup Efficiency</h6>
 <div class="chartWrapper">
+    <div class="chartHeader">Manager Lineup Efficiency</div>
     {#each rows as row, ix}
         <div class="barParent">
             <img alt="team avatar" onclick={() => goto(row)} style="border-color: var({colors[ix % colors.length]});" class="teamAvatar clickable" src={avatarFor(row)} />

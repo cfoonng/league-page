@@ -6,6 +6,7 @@
 	import RecordTeam from './RecordTeam.svelte';
 	import BarChart from '$lib/BarChart.svelte';
 	import LineupEfficiencyChart from './LineupEfficiencyChart.svelte';
+	import AchieverChart from './AchieverChart.svelte';
 
     export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], allTime=false, leagueTeamManagers;
 
@@ -492,7 +493,7 @@
         {/if}
     </div>
     <div class="settingLineupsPanel">
-        <!-- right-hand panel: reserved for the next chart -->
+        <AchieverChart {leagueTeamManagers} {allTime} year={allTime ? null : prefix} />
     </div>
 </div>
 
