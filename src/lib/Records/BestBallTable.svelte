@@ -104,8 +104,8 @@
             <Row>
                 <Cell class="header rank"></Cell>
                 <Cell class="header">Manager</Cell>
-                <Cell class="header">Hypothetical Record</Cell>
-                <Cell class="header">Actual Record</Cell>
+                <Cell class="header">Hypothetical<br />Record</Cell>
+                <Cell class="header">Actual<br />Record</Cell>
             </Row>
         </Head>
         <Body>
