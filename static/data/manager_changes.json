@@ -1,0 +1,160 @@
+{
+ "allTime": [
+  {
+   "managerID": "852680448239869952",
+   "team": "maxabroms",
+   "changes": 92
+  },
+  {
+   "managerID": "1265051241960964096",
+   "team": "confonger",
+   "changes": 81
+  },
+  {
+   "managerID": "1003557305339768832",
+   "team": "gjb31",
+   "changes": 76
+  },
+  {
+   "managerID": "999465012592803840",
+   "team": "Libermaniacjr",
+   "changes": 76
+  },
+  {
+   "managerID": "1265035377249374208",
+   "team": "Marcusablock",
+   "changes": 60
+  },
+  {
+   "managerID": "1265769112982786048",
+   "team": "CheckNate10",
+   "changes": 54
+  },
+  {
+   "managerID": "1264841066129932288",
+   "team": "Matt2001Martin",
+   "changes": 48
+  },
+  {
+   "managerID": "1127702793260810240",
+   "team": "CeceRAIDERS",
+   "changes": 40
+  },
+  {
+   "managerID": "1265033826942337024",
+   "team": "FatherK11",
+   "changes": 33
+  },
+  {
+   "managerID": "1265959180385128448",
+   "team": "koru13",
+   "changes": 3
+  }
+ ],
+ "seasons": {
+  "2025": [
+   {
+    "managerID": "1003557305339768832",
+    "team": "gjb31",
+    "changes": 42
+   },
+   {
+    "managerID": "1127702793260810240",
+    "team": "CeceRAIDERS",
+    "changes": 30
+   },
+   {
+    "managerID": "1264841066129932288",
+    "team": "Matt2001Martin",
+    "changes": 34
+   },
+   {
+    "managerID": "1265033826942337024",
+    "team": "FatherK11",
+    "changes": 23
+   },
+   {
+    "managerID": "1265035377249374208",
+    "team": "Marcusablock",
+    "changes": 36
+   },
+   {
+    "managerID": "1265051241960964096",
+    "team": "confonger",
+    "changes": 46
+   },
+   {
+    "managerID": "1265769112982786048",
+    "team": "CheckNate10",
+    "changes": 28
+   },
+   {
+    "managerID": "1265959180385128448",
+    "team": "koru13",
+    "changes": 0
+   },
+   {
+    "managerID": "852680448239869952",
+    "team": "maxabroms",
+    "changes": 51
+   },
+   {
+    "managerID": "999465012592803840",
+    "team": "Libermaniacjr",
+    "changes": 47
+   }
+  ],
+  "2026": [
+   {
+    "managerID": "1003557305339768832",
+    "team": "gjb31",
+    "changes": 34
+   },
+   {
+    "managerID": "1127702793260810240",
+    "team": "CeceRAIDERS",
+    "changes": 10
+   },
+   {
+    "managerID": "1264841066129932288",
+    "team": "Matt2001Martin",
+    "changes": 14
+   },
+   {
+    "managerID": "1265033826942337024",
+    "team": "FatherK11",
+    "changes": 10
+   },
+   {
+    "managerID": "1265035377249374208",
+    "team": "Marcusablock",
+    "changes": 24
+   },
+   {
+    "managerID": "1265051241960964096",
+    "team": "confonger",
+    "changes": 35
+   },
+   {
+    "managerID": "1265769112982786048",
+    "team": "CheckNate10",
+    "changes": 26
+   },
+   {
+    "managerID": "1265959180385128448",
+    "team": "koru13",
+    "changes": 3
+   },
+   {
+    "managerID": "852680448239869952",
+    "team": "maxabroms",
+    "changes": 41
+   },
+   {
+    "managerID": "999465012592803840",
+    "team": "Libermaniacjr",
+    "changes": 29
+   }
+  ]
+ }
+}
