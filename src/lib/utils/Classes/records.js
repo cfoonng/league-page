@@ -17,6 +17,8 @@ export class Records {
 
 		this.allTimeBiggestBlowouts = [];
 		this.allTimeClosestMatchups = [];
+		this.allTimeMostCombined = [];
+		this.allTimeLeastCombined = [];
 		this.leastSeasonLongPoints = [];
 		this.mostSeasonLongPoints = [];
 		this.leagueWeekLows = [];
@@ -180,6 +182,12 @@ Records.prototype.addSeasonWeekRecord = function(entry) {
     this.allTimeBiggestBlowouts = allTimeBiggestBlowouts;
     this.allTimeClosestMatchups = allTimeClosestMatchups;
 
+    // add combined points to every matchup and return the highest and lowest scoring matchups
+    const matchupsWithCombined = this.allTimeMatchupDifferentials.map(m => ({...m, combined: m.home.fpts + m.away.fpts}));
+    const [allTimeMostCombined, allTimeLeastCombined] = sortHighAndLow(matchupsWithCombined, 'combined');
+    this.allTimeMostCombined = allTimeMostCombined;
+    this.allTimeLeastCombined = allTimeLeastCombined;
+
     // sort leagueWeekRecords and return the highest weekly scores and lowest weekly scores
     const [leagueWeekHighs, leagueWeekLows] = sortHighAndLow(this.leagueWeekRecords, 'fpts')
     this.leagueWeekHighs = leagueWeekHighs;
@@ -203,6 +211,8 @@ Records.prototype.returnRecords = function() {
     return {
         allTimeBiggestBlowouts: this.allTimeBiggestBlowouts,
         allTimeClosestMatchups: this.allTimeClosestMatchups,
+        allTimeMostCombined: this.allTimeMostCombined,
+        allTimeLeastCombined: this.allTimeLeastCombined,
         leastSeasonLongPoints: this.leastSeasonLongPoints,
         mostSeasonLongPoints: this.mostSeasonLongPoints,
         leagueWeekLows: this.leagueWeekLows,
