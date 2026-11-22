@@ -1,12 +1,12 @@
 // Playoff starting lineups for the Ring of Honor, straight from Sleeper.
 // Counts winners bracket games only (including the 3rd place game), every season.
 // Returns entries shaped like the records loader's lineupWeeks:
-//   {year, week, rosterID, managers, starters, startersPoints, playoff: true}
+//   {year, week, rosterID, managers, starters, startersPoints, playersPoints, playoff: true}
 import { getLeagueData } from '$lib/utils/helperFunctions/leagueData';
 import { getNflState } from '$lib/utils/helperFunctions/nflState';
 import { getManagers } from '$lib/utils/helperFunctions/universalFunctions';
 
-const CACHE_KEY = 'ringPlayoffWeeks';
+const CACHE_KEY = 'ringPlayoffWeeks2';
 const CACHE_HOURS = 6;
 
 const getJSON = async (url) => {
@@ -82,6 +82,7 @@ export const loadPlayoffWeeks = async (leagueID) => {
                     managers: managersByRoster[m.roster_id] || [],
                     starters: m.starters || [],
                     startersPoints: m.starters_points || [],
+                    playersPoints: m.players_points || {},   // starters and bench (Player Stats single games)
                     playoff: true,
                 });
             }
