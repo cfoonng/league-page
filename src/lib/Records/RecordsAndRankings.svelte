@@ -10,8 +10,9 @@
 	import LastUpdated from './LastUpdated.svelte';
 	import BestBallTable from './BestBallTable.svelte';
 	import ManagerChangesTable from './ManagerChangesTable.svelte';
+	import PositionContributions from './PositionContributions.svelte';
 
-    export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], allTime=false, leagueTeamManagers;
+    export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], lineupWeeks = [], lineupSlots = {}, allTime=false, leagueTeamManagers;
 
     // Rankings section (chart + Lineup IQ / Win % / Fantasy Points / Transactions tables) is hidden for now
     const SHOW_RANKINGS = false;
@@ -514,6 +515,10 @@
         <ManagerChangesTable {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} />
     </div>
 </div>
+
+<h4>Position Contributions</h4>
+
+<PositionContributions {lineupWeeks} {lineupSlots} {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} />
 
 <h4>Scoring Records</h4>
 

@@ -18,6 +18,8 @@
     let allTimeClosestMatchups = $state();
     let allTimeBiggestBlowouts = $state();
     let allTimeMostCombined = $state();
+    let lineupWeeks = $state([]);
+    let lineupSlots = $state({});
     let allTimeLeastCombined = $state();
     let mostSeasonLongPoints = $state();
     let leastSeasonLongPoints = $state();
@@ -47,6 +49,8 @@
         allTimeClosestMatchups = selectedLeagueData.allTimeClosestMatchups;
         allTimeBiggestBlowouts = selectedLeagueData.allTimeBiggestBlowouts;
         allTimeMostCombined = selectedLeagueData.allTimeMostCombined;
+        lineupWeeks = selectedLeagueData.lineupWeeks || [];
+        lineupSlots = selectedLeagueData.lineupSlots || {};
         allTimeLeastCombined = selectedLeagueData.allTimeLeastCombined;
         mostSeasonLongPoints = selectedLeagueData.mostSeasonLongPoints;
         leastSeasonLongPoints = selectedLeagueData.leastSeasonLongPoints;
@@ -125,11 +129,11 @@
 
     {#if display == "allTime"}
         {#if leagueWeekHighs?.length}
-            <AllTimeRecords transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {allTimeMostCombined} {allTimeLeastCombined} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
+            <AllTimeRecords transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {allTimeMostCombined} {allTimeLeastCombined} {lineupWeeks} {lineupSlots} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
         {:else}
             <p class="empty">No records <i>yet</i>...</p>
         {/if}
     {:else}
-        <PerSeasonRecords transactionTotals={totals} {leagueRosterRecords} {seasonWeekRecords} {leagueTeamManagers} {currentYear} {lastYear} {key} />
+        <PerSeasonRecords transactionTotals={totals} {lineupWeeks} {lineupSlots} {leagueRosterRecords} {seasonWeekRecords} {leagueTeamManagers} {currentYear} {lastYear} {key} />
     {/if}
 </div>
