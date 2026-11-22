@@ -73,6 +73,12 @@ export const tabs = [
         ]
     },
     {
+        icon: 'workspace_premium',
+        label: 'Ring of Honor',
+        dest: '/ring-of-honor',
+        key: 'ring_of_honor',
+    },
+    {
         icon: 'lightbulb',
         label: 'Resources',
         dest: '/resources',
