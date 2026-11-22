@@ -208,7 +208,7 @@
     }
 
     /* two tables stacked in one column */
-    .stacked + .stacked {
+    .tableScroll + .tableScroll {
         margin-top: 2em;
     }
 
