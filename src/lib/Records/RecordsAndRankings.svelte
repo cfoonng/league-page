@@ -5,6 +5,7 @@
   	import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
 	import RecordTeam from './RecordTeam.svelte';
 	import BarChart from '$lib/BarChart.svelte';
+	import LineupEfficiencyChart from './LineupEfficiencyChart.svelte';
 
     export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], allTime=false, leagueTeamManagers;
 
@@ -282,6 +283,21 @@
         margin: 2em 0 1em;
     }
 
+    /* Setting Lineups section: two side-by-side panels (stacked on small screens) */
+    .settingLineups {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2em;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+
+    .settingLineupsPanel {
+        flex: 1 1 450px;
+        max-width: 600px;
+    }
+
     .rankingTableWrapper {
         width: 25%;
     }
@@ -467,7 +483,20 @@
     /* END ranking table resizing */
 </style>
 
-<h4>{prefix} Records</h4>
+<h4>Setting Lineups</h4>
+
+<div class="settingLineups">
+    <div class="settingLineupsPanel">
+        {#if lineupIQs && lineupIQs.some(l => l.potentialPoints)}
+            <LineupEfficiencyChart {lineupIQs} {leagueTeamManagers} year={allTime ? null : prefix} />
+        {/if}
+    </div>
+    <div class="settingLineupsPanel">
+        <!-- right-hand panel: reserved for the next chart -->
+    </div>
+</div>
+
+<h4>Scoring Records</h4>
 
 <div class="fullFlex">
     {#if weekRecords && weekRecords.length}
