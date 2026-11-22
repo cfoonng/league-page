@@ -1,11 +1,15 @@
-import {leagueID} from '$lib/utils/leagueInfo';
-
 export const tabs = [
     {
         icon: 'home',
         label: 'Home',
         dest: '/',
         key: 'home',
+    },
+    {
+        icon: 'military_tech',
+        label: 'Stats',
+        dest: '/records',
+        key: 'records',
     },
     {
         icon: 'sports',
@@ -61,21 +65,6 @@ export const tabs = [
                 label: 'Trophy Room',
                 dest: '/awards',
             },
-            {
-                icon: 'military_tech',
-                label: 'Records',
-                dest: '/records',
-            },
-            // {
-            //     icon: 'history_edu',
-            //     label: 'Constitution',
-            //     dest: '/constitution',
-            // },
-            // {
-            //     icon: 'sports_football',
-            //     label: 'Go to Sleeper',
-            //     dest: `https://sleeper.app/leagues/${leagueID}`,
-            // },
         ]
     },
     {
