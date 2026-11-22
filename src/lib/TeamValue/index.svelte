@@ -8,7 +8,7 @@
     import { getLeagueRosters, getLeagueTeamManagers, waitForAll } from '$lib/utils/helper';
     import { gotoManager } from '$lib/utils/helperFunctions/universalFunctions';
 
-    // sortable value columns: [key in the JSON, column / button label]
+    // value columns: [key in the JSON, label]
     const COLUMNS = [
         ['total', 'Team'],
         ['players', 'Players Only'],
@@ -18,6 +18,12 @@
         ['WR', 'WR'],
         ['TE', 'TE'],
         ['picks', 'Picks'],
+    ];
+
+    // sort buttons, in two rows: overall first, then positions
+    const BUTTON_ROWS = [
+        [['record', 'Record'], ['total', 'Team'], ['players', 'Players Only'], ['starters', 'Starters'], ['picks', 'Picks']],
+        [['QB', 'QB'], ['RB', 'RB'], ['WR', 'WR'], ['TE', 'TE']],
     ];
 
     let valueData = $state(null);
@@ -60,9 +66,21 @@
         return Object.fromEntries(list.map((r, ix) => [r.rosterID, {...r, standing: ix + 1}]));
     });
 
+    // Record sorts by standing (#1 first); every other option sorts highest value first
     let rows = $derived(
-        (valueData?.teams || []).slice().sort((a, b) => b[sortKey] - a[sortKey])
+        (valueData?.teams || []).slice().sort((a, b) => {
+            if(sortKey == 'record') {
+                return (standings[a.rosterID]?.standing ?? 99) - (standings[b.rosterID]?.standing ?? 99);
+            }
+            return b[sortKey] - a[sortKey];
+        })
     );
+
+    // each team's rank within every value column, e.g. ranks.RB[rosterID] = 7
+    let ranks = $derived(Object.fromEntries(COLUMNS.map(([key]) => {
+        const order = (valueData?.teams || []).slice().sort((a, b) => b[key] - a[key]);
+        return [key, Object.fromEntries(order.map((r, ix) => [r.rosterID, ix + 1]))];
+    })));
 
     // best and worst at each column (for the cell colors)
     let ranges = $derived(Object.fromEntries(COLUMNS.map(([key]) => {
@@ -79,11 +97,7 @@
 
     const recordFor = (row) => {
         const s = standings[row.rosterID];
-        if(!s) return null;
-        return {
-            text: `${s.wins}-${s.losses}${s.ties ? `-${s.ties}` : ''}`,
-            standing: s.standing,
-        };
+        return s ? `${s.wins}-${s.losses}${s.ties ? `-${s.ties}` : ''}` : '';
     };
 
     const userFor = (row) => leagueTeamManagers?.users?.[row.managerID];
@@ -107,6 +121,10 @@
     .buttonHolder {
         text-align: center;
         margin: 0 0 1.2em;
+    }
+
+    .buttonRow + .buttonRow {
+        margin-top: 0.5em;
     }
 
     .tableScroll {
@@ -145,7 +163,12 @@
         border: 0.25px solid #777;
     }
 
-    /* standing next to the record, 2pt smaller */
+    /* value and its rank stay on one line (global: the class is on an SMUI Cell) */
+    :global(.valueTable .valueCell) {
+        white-space: nowrap;
+    }
+
+    /* rank within the column, 2pt smaller */
     .standing {
         font-size: calc(1em - 2pt);
         color: var(--g999);
@@ -193,13 +216,17 @@
         </div>
     {:else}
         <div class="buttonHolder">
-            <Group variant="outlined">
-                {#each COLUMNS as [key, label]}
-                    <Button class="selectionButtons" onclick={() => sortKey = key} variant="{sortKey == key ? 'raised' : 'outlined'}">
-                        <Label>{label}</Label>
-                    </Button>
-                {/each}
-            </Group>
+            {#each BUTTON_ROWS as buttonRow}
+                <div class="buttonRow">
+                    <Group variant="outlined">
+                        {#each buttonRow as [key, label]}
+                            <Button class="selectionButtons" onclick={() => sortKey = key} variant="{sortKey == key ? 'raised' : 'outlined'}">
+                                <Label>{label}</Label>
+                            </Button>
+                        {/each}
+                    </Group>
+                </div>
+            {/each}
         </div>
 
         <div class="tableScroll">
@@ -214,9 +241,13 @@
                     <Row>
                         <Cell class="header"></Cell>
                         <Cell class="header">Manager</Cell>
-                        <Cell class="header">Record</Cell>
+                        <Cell class="header"><span class={sortKey == 'record' ? 'selectedHeader' : ''}>Record</span></Cell>
                         {#each COLUMNS as [key, label]}
-                            <Cell class="header"><span class={sortKey == key ? 'selectedHeader' : ''}>{label}</span></Cell>
+                            <Cell class="header">
+                                <span class={sortKey == key ? 'selectedHeader' : ''}>
+                                    {#if key == 'players'}Players<br />Only{:else}{label}{/if}
+                                </span>
+                            </Cell>
                         {/each}
                     </Row>
                 </Head>
@@ -232,14 +263,10 @@
                                     <span>{nameFor(row)}</span>
                                 </div>
                             </Cell>
-                            <Cell>
-                                {#if recordFor(row)}
-                                    {recordFor(row).text}&nbsp;&nbsp;<span class="standing">(#{recordFor(row).standing})</span>
-                                {/if}
-                            </Cell>
+                            <Cell><span class={sortKey == 'record' ? 'selected' : ''}>{recordFor(row)}</span></Cell>
                             {#each COLUMNS as [key]}
-                                <Cell style="background-color: {cellColor(key, row[key])};">
-                                    <span class={sortKey == key ? 'selected' : ''}>{fmt(row[key])}</span>
+                                <Cell class="valueCell" style="background-color: {cellColor(key, row[key])};">
+                                    <span class={sortKey == key ? 'selected' : ''}>{fmt(row[key])}</span>&nbsp;&nbsp;<span class="standing">(#{ranks[key][row.rosterID]})</span>
                                 </Cell>
                             {/each}
                         </Row>
