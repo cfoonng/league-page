@@ -150,6 +150,21 @@
     }) : []);
     const acqText = (fn) => acqError ? '—' : (acquisitions ? fn() : '...');
 
+    // ---- Most Games Missed (from games_missed.json, made by the current-season notebook) ----
+    let missedData = $state(null);
+    $effect(() => {
+        fetch('/data/games_missed.json')
+            .then(res => res.ok ? res.json() : null)
+            .then(data => missedData = data)
+            .catch(() => missedData = null);
+    });
+    let missedRows = $derived((missedData?.rows || [])
+        .filter(r => selectedYear === null || r.year == selectedYear)
+        .filter(r => position == 'ALL' || positionOf(r.pid) == position)
+        .slice().sort((a, b) => (b.missed - a.missed) || (b.year - a.year))
+        .slice(0, TOP_N));
+    let missedTitle = $derived(display == 'allTime' ? 'All-Time Most Games Missed' : `${display} Most Games Missed`);
+
     let seasonTitle = $derived(display == 'allTime' ? 'All-Time Single Season Scoring Records' : `${display} Season Leaders`);
     let gameTitle = $derived(display == 'allTime' ? 'All-Time Single Game Performances' : `${display} Single Game Performances`);
     let benchTitle = $derived(display == 'allTime' ? 'All-Time Best Bench Performances' : `${display} Best Bench Performances`);
@@ -349,6 +364,49 @@
                             </Row>
                         {:else}
                             <Row><Cell colspan={display == 'allTime' ? 5 : 4}>No players yet.</Cell></Row>
+                        {/each}
+                    </Body>
+                </DataTable>
+                </div>
+
+                <!-- below: most games missed in a season -->
+                <div class="tableScroll stacked">
+                <DataTable class="playerTable">
+                    <Head>
+                        <Row>
+                            <Cell class="header tableHeader" colspan={display == 'allTime' ? 5 : 4}>
+                                {missedTitle}{posLabel}
+                                <span class="subTitle">Regular season weeks on a roster when his NFL team played and he didn't</span>
+                            </Cell>
+                        </Row>
+                        <Row>
+                            <Cell class="header"></Cell>
+                            <Cell class="header">Player</Cell>
+                            <Cell class="header">Manager</Cell>
+                            {#if display == 'allTime'}
+                                <Cell class="header">Year</Cell>
+                            {/if}
+                            <Cell class="header">Games<br />Missed</Cell>
+                        </Row>
+                    </Head>
+                    <Body>
+                        {#each missedRows as row, ix}
+                            <Row>
+                                <Cell>{ix + 1}</Cell>
+                                <Cell>
+                                    <div class="playerCell">
+                                        <div class="playerPhoto" style={playerPhoto(row.pid)}></div>
+                                        <span>{splitName(playerName(row.pid))[0]}{#if splitName(playerName(row.pid))[1]}<br />{splitName(playerName(row.pid))[1]}{/if}<span class="pos">{positionOf(row.pid) || ''}</span></span>
+                                    </div>
+                                </Cell>
+                                <Cell>{teamName(row.rosterID, row.year)}</Cell>
+                                {#if display == 'allTime'}
+                                    <Cell>{row.year}</Cell>
+                                {/if}
+                                <Cell>{row.missed}</Cell>
+                            </Row>
+                        {:else}
+                            <Row><Cell colspan={display == 'allTime' ? 5 : 4}>{missedData ? 'No missed games.' : 'Upload games_missed.json to static/data/ to fill this in.'}</Cell></Row>
                         {/each}
                     </Body>
                 </DataTable>
