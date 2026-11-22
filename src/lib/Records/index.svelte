@@ -142,6 +142,8 @@
 </style>
 
 <div class="rankingsWrapper">
+    <!-- wait until the records are in before drawing a season (default view) -->
+    {#if currentYear && leagueRosterRecords && seasonWeekRecords}
     {#each SECTIONS as sec}
         <h4>{sec.title}</h4>
         {#if sec.id == 'lineups'}
@@ -173,4 +175,5 @@
             {/if}
         {/key}
     {/each}
+    {/if}
 </div>

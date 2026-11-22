@@ -136,6 +136,7 @@
 </script>
 
 
+{#if years[display]}
 <RecordsAndRankings
     waiversData={years[display].waiversData}
     tradesData={years[display].tradesData}
@@ -158,3 +159,4 @@
     {leagueTeamManagers}
     {key}
 />
+{/if}
