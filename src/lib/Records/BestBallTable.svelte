@@ -51,15 +51,22 @@
         border: 0.25px solid #777;
     }
 
-    .move {
-        display: inline-block;
-        width: 1.2em;
-        margin-left: 0.4em;
-        font-size: 0.8em;
-        text-align: center;
+    /* rank number with the up/down marker next to it */
+    .rankCell {
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
     }
 
-    /* actual standing next to the actual record, 2pt smaller */
+    .move {
+        display: inline-block;
+        min-width: 1.8em;
+        margin-left: 0.4em;
+        font-size: 0.8em;
+        text-align: left;
+    }
+
+    /* standing next to each record, 2pt smaller */
     .standing {
         font-size: calc(1em - 2pt);
         color: var(--g999);
@@ -104,23 +111,27 @@
         <Body>
             {#each rows as row}
                 <Row>
-                    <Cell class="rank">{row.rank}</Cell>
+                    <Cell class="rank">
+                        <span class="rankCell">
+                            <span>{row.rank}</span>
+                            {#if row.change > 0}
+                                <span class="move up" title="Would have finished {row.change} spot{row.change == 1 ? '' : 's'} higher">▲{row.change}</span>
+                            {:else if row.change < 0}
+                                <span class="move down" title="Would have finished {-row.change} spot{row.change == -1 ? '' : 's'} lower">▼{-row.change}</span>
+                            {:else}
+                                <span class="move same" title="Same finish">–</span>
+                            {/if}
+                        </span>
+                    </Cell>
                     <Cell>
                         <div class="managerCell" onclick={() => goto(row)}>
                             {#if avatarFor(row)}
                                 <img class="avatar" alt="manager avatar" src={avatarFor(row)} />
                             {/if}
                             <span>{nameFor(row)}</span>
-                            {#if row.change > 0}
-                                <span class="move up" title="Would have finished {row.change} spot{row.change == 1 ? '' : 's'} higher">▲</span>
-                            {:else if row.change < 0}
-                                <span class="move down" title="Would have finished {-row.change} spot{row.change == -1 ? '' : 's'} lower">▼</span>
-                            {:else}
-                                <span class="move same" title="Same finish">–</span>
-                            {/if}
                         </div>
                     </Cell>
-                    <Cell>{row.record}</Cell>
+                    <Cell>{row.record}&nbsp;&nbsp;<span class="standing">(#{row.rank})</span></Cell>
                     <Cell>{row.actualRecord}&nbsp;&nbsp;<span class="standing">(#{row.actualRank})</span></Cell>
                 </Row>
             {/each}
