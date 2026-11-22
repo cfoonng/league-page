@@ -188,6 +188,7 @@ const processRegularSeason = async ({rosters, leagueData, curSeason, week, regul
 				managers: roster ? getManagers(roster) : [],
 				starters: matchup.starters,
 				startersPoints: matchup.starters_points || [],
+				playersPoints: matchup.players_points || {}, // every rostered player (bench included), for Player Stats
 			});
 		}
 		lineupWeek--;
