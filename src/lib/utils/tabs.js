@@ -7,9 +7,15 @@ export const tabs = [
     },
     {
         icon: 'military_tech',
-        label: 'Stats',
+        label: 'Team Stats',
         dest: '/records',
         key: 'records',
+    },
+    {
+        icon: 'sports_football',
+        label: 'Player Stats',
+        dest: '/player-stats',
+        key: 'player_stats',
     },
     {
         icon: 'sports',
