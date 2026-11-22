@@ -6,7 +6,7 @@
 	import RecordTeam from './RecordTeam.svelte';
 	import BarChart from '$lib/BarChart.svelte';
 
-    export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, allTime=false, leagueTeamManagers;
+    export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], allTime=false, leagueTeamManagers;
 
     let graphs = [];
     let curTable = 0;
@@ -650,6 +650,82 @@
                         </Cell>
                         <Cell>{allTime ? closestMatchup.year + " " : "" }{key == "regularSeasonData" ? "Week " : ""}{closestMatchup.week}</Cell>
                         <Cell>{round(closestMatchup.differential)}</Cell>
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    {/if}
+
+    {#if mostCombined && mostCombined.length}
+        <DataTable class="recordTable">
+            <Head>
+                <Row>
+                    <Cell class="header headerPrimary" colspan=4>{prefix} Highest Scoring Matchups</Cell>
+                </Row>
+                <Row>
+                    <Cell class="header rank"></Cell>
+                    <Cell class="header">Matchup</Cell>
+                    <Cell class="header">Week</Cell>
+                    <Cell class="header">Combined</Cell>
+                </Row>
+            </Head>
+            <Body>
+                {#each mostCombined as highMatchup, ix}
+                    <Row>
+                        <Cell class="rank">{ix + 1}</Cell>
+                        <Cell class="cellName differentialName">
+                            <div class="vsRecord">
+                                <div onclick={() => gotoManager({year: highMatchup.year || prefix, leagueTeamManagers, rosterID: highMatchup.home.rosterID})}>
+                                    <RecordTeam {leagueTeamManagers} rosterID={highMatchup.home.rosterID} year={allTime ? highMatchup.year : prefix} compressed={true} points={round(highMatchup.home.fpts)} />
+                                </div>
+                                <p class="vs">
+                                    vs
+                                </p>
+                                <div onclick={() => gotoManager({year: highMatchup.year || prefix, leagueTeamManagers, rosterID: highMatchup.away.rosterID})}>
+                                    <RecordTeam {leagueTeamManagers} rosterID={highMatchup.away.rosterID} year={allTime ? highMatchup.year : prefix} compressed={true} points={round(highMatchup.away.fpts)} />
+                                </div>
+                            </div>
+                        </Cell>
+                        <Cell>{allTime ? highMatchup.year + " " : "" }{key == "regularSeasonData" ? "Week " : ""}{highMatchup.week}</Cell>
+                        <Cell>{round(highMatchup.combined)}</Cell>
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    {/if}
+
+    {#if leastCombined && leastCombined.length}
+        <DataTable class="recordTable">
+            <Head>
+                <Row>
+                    <Cell class="header headerPrimary" colspan=4>{prefix} Lowest Scoring Matchups</Cell>
+                </Row>
+                <Row>
+                    <Cell class="header rank"></Cell>
+                    <Cell class="header">Matchup</Cell>
+                    <Cell class="header">Week</Cell>
+                    <Cell class="header">Combined</Cell>
+                </Row>
+            </Head>
+            <Body>
+                {#each leastCombined as lowMatchup, ix}
+                    <Row>
+                        <Cell class="rank">{ix + 1}</Cell>
+                        <Cell class="cellName differentialName">
+                            <div class="vsRecord">
+                                <div onclick={() => gotoManager({year: lowMatchup.year || prefix, leagueTeamManagers, rosterID: lowMatchup.home.rosterID})}>
+                                    <RecordTeam {leagueTeamManagers} rosterID={lowMatchup.home.rosterID} year={allTime ? lowMatchup.year : prefix} compressed={true} points={round(lowMatchup.home.fpts)} />
+                                </div>
+                                <p class="vs">
+                                    vs
+                                </p>
+                                <div onclick={() => gotoManager({year: lowMatchup.year || prefix, leagueTeamManagers, rosterID: lowMatchup.away.rosterID})}>
+                                    <RecordTeam {leagueTeamManagers} rosterID={lowMatchup.away.rosterID} year={allTime ? lowMatchup.year : prefix} compressed={true} points={round(lowMatchup.away.fpts)} />
+                                </div>
+                            </div>
+                        </Cell>
+                        <Cell>{allTime ? lowMatchup.year + " " : "" }{key == "regularSeasonData" ? "Week " : ""}{lowMatchup.week}</Cell>
+                        <Cell>{round(lowMatchup.combined)}</Cell>
                     </Row>
                 {/each}
             </Body>

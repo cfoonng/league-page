@@ -17,6 +17,8 @@
     let leagueWeekLows = $state();
     let allTimeClosestMatchups = $state();
     let allTimeBiggestBlowouts = $state();
+    let allTimeMostCombined = $state();
+    let allTimeLeastCombined = $state();
     let mostSeasonLongPoints = $state();
     let leastSeasonLongPoints = $state();
     let seasonWeekRecords = $state();
@@ -44,6 +46,8 @@
         leagueWeekLows = selectedLeagueData.leagueWeekLows;
         allTimeClosestMatchups = selectedLeagueData.allTimeClosestMatchups;
         allTimeBiggestBlowouts = selectedLeagueData.allTimeBiggestBlowouts;
+        allTimeMostCombined = selectedLeagueData.allTimeMostCombined;
+        allTimeLeastCombined = selectedLeagueData.allTimeLeastCombined;
         mostSeasonLongPoints = selectedLeagueData.mostSeasonLongPoints;
         leastSeasonLongPoints = selectedLeagueData.leastSeasonLongPoints;
         seasonWeekRecords = selectedLeagueData.seasonWeekRecords;
@@ -121,7 +125,7 @@
 
     {#if display == "allTime"}
         {#if leagueWeekHighs?.length}
-            <AllTimeRecords transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
+            <AllTimeRecords transactionTotals={totals} {allTimeClosestMatchups} {allTimeBiggestBlowouts} {allTimeMostCombined} {allTimeLeastCombined} {leagueManagerRecords} {leagueWeekHighs} {leagueWeekLows} {leagueTeamManagers} {mostSeasonLongPoints} {leastSeasonLongPoints} {key} />
         {:else}
             <p class="empty">No records <i>yet</i>...</p>
         {/if}
