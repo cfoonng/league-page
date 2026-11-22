@@ -147,6 +147,13 @@
         text-align: center;
     }
 
+    .sectionNote {
+        text-align: center;
+        font-style: italic;
+        color: var(--g999);
+        margin: -0.5em 0 1em;
+    }
+
     .subTitle {
         display: block;
         font-style: italic;
@@ -328,6 +335,7 @@
         </div>
 
         <h4>Start/Bench This MF</h4>
+        <p class="sectionNote">Starters who are frequently outscored by bench players, and bench players who frequently outscore starters</p>
 
         <div class="tables">
             {#each [['Start this MF', startRows, 'Games Benched'], ['Bench this MF', benchRows, 'Games Started']] as [title, moveRows, gamesLabel]}
