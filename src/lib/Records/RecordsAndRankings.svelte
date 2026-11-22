@@ -11,6 +11,7 @@
 	import BestBallTable from './BestBallTable.svelte';
 	import ManagerChangesTable from './ManagerChangesTable.svelte';
 	import PositionContributions from './PositionContributions.svelte';
+	import WorstMaxPFTable from './WorstMaxPFTable.svelte';
 
     export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], lineupWeeks = [], lineupSlots = {}, seasonLongMaxPF = [], seasonLongMaxPFLows = [], incompleteYears = [], allTime=false, leagueTeamManagers;
 
@@ -691,33 +692,8 @@
         </DataTable>
     {/if}
 
-    {#if weekLows && weekLows.length}
-        <DataTable class="recordTable">
-            <Head>
-                <Row>
-                    <Cell class="header headerPrimary" colspan=4>{prefix} {key == "playoffData" ? "Playoff " : ""}Single Week Scoring Lows</Cell>
-                </Row>
-                <Row>
-                    <Cell class="header rank"></Cell>
-                    <Cell class="header">Manager</Cell>
-                    <Cell class="header">Week</Cell>
-                    <Cell class="header">Total Points</Cell>
-                </Row>
-            </Head>
-            <Body>
-                {#each weekLows as leagueWeekLow, ix}
-                    <Row>
-                        <Cell class="rank">{ix + 1}</Cell>
-                        <Cell class="cellName" onclick={() => gotoManager({year: leagueWeekLow.year || prefix, leagueTeamManagers, rosterID: leagueWeekLow.rosterID})}>
-                            <RecordTeam {leagueTeamManagers} rosterID={leagueWeekLow.rosterID} year={allTime ? leagueWeekLow.year : prefix} />
-                        </Cell>
-                        <Cell>{allTime ? leagueWeekLow.year + " " : "" }{key == "regularSeasonData" ? "Week " : ""}{leagueWeekLow.week}</Cell>
-                        <Cell>{round(leagueWeekLow.fpts)}</Cell>
-                    </Row>
-                {/each}
-            </Body>
-        </DataTable>
-    {/if}
+    <!-- replaces Single Week Scoring Lows -->
+    <WorstMaxPFTable {lineupWeeks} {lineupSlots} {leagueTeamManagers} {allTime} year={allTime ? null : prefix} {prefix} count={weekLows?.length || 10} />
 
     {#if blowouts && blowouts.length}
         <DataTable class="recordTable">
