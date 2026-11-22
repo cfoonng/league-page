@@ -7,6 +7,7 @@
 	import BarChart from '$lib/BarChart.svelte';
 	import LineupEfficiencyChart from './LineupEfficiencyChart.svelte';
 	import AchieverChart from './AchieverChart.svelte';
+	import LastUpdated from './LastUpdated.svelte';
 
     export let key, tradesData, waiversData, weekRecords, weekLows, seasonLongRecords, seasonLongLows, showTies, winPercentages, fptsHistories, lineupIQs, prefix, blowouts, closestMatchups, mostCombined = [], leastCombined = [], allTime=false, leagueTeamManagers;
 
@@ -485,6 +486,7 @@
 </style>
 
 <h4>Setting Lineups</h4>
+<LastUpdated />
 
 <div class="settingLineups">
     <div class="settingLineupsPanel">

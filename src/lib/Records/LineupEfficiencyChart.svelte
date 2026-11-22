@@ -2,7 +2,7 @@
     // Ranked horizontal bar chart of lineup efficiency (points scored / max possible points).
     // Uses Sleeper's own season totals (fpts and potential points), so no extra data is needed.
     // Styled to match the home page's Rest of Season Power Rankings chart.
-    import { getAvatarFromTeamManagers, getTeamNameFromTeamManagers, gotoManager } from '$lib/utils/helperFunctions/universalFunctions';
+    import { getAvatarFromTeamManagers, renderManagerNames, gotoManager } from '$lib/utils/helperFunctions/universalFunctions';
 
     let { lineupIQs = [], leagueTeamManagers, year = null } = $props();
 
@@ -44,7 +44,8 @@
     const nameFor = (row) => {
         const user = userFor(row);
         if(user) return user.display_name;
-        if(row.rosterID) return getTeamNameFromTeamManagers(leagueTeamManagers, row.rosterID, year);
+        // single season rows are per roster: show the manager username(s), not the team name
+        if(row.rosterID) return renderManagerNames(leagueTeamManagers, row.rosterID, year);
         return '';
     };
 

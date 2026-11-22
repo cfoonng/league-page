@@ -2,7 +2,7 @@
     // Overachiever / Underachiever: a centered (diverging) bar chart of how many points per game
     // each manager scored above or below their starters' projections.
     // Data comes from static/data/achiever.json, exported from the notebook.
-    import { getAvatarFromTeamManagers, getTeamNameFromTeamManagers, gotoManager } from '$lib/utils/helperFunctions/universalFunctions';
+    import { getAvatarFromTeamManagers, renderManagerNames, gotoManager } from '$lib/utils/helperFunctions/universalFunctions';
 
     let { leagueTeamManagers, allTime = false, year = null } = $props();
 
@@ -42,7 +42,7 @@
     const nameFor = (row) => {
         const user = userFor(row);
         if(user) return user.display_name;
-        if(row.rosterID) return getTeamNameFromTeamManagers(leagueTeamManagers, row.rosterID, year);
+        if(row.rosterID) return renderManagerNames(leagueTeamManagers, row.rosterID, year);
         return row.team || '';
     };
 
@@ -75,27 +75,44 @@
         color: var(--g999);
     }
 
-    /* one row per manager: name on top (centered), then [under bar | avatar | over bar] */
-    .row {
-        padding: 0.35em 0;
+    /* one row per manager, same height as the Lineup Efficiency rows:
+       the avatar sits in the middle, bars grow out from it, and the name sits above the bar */
+    .barParent {
+        position: relative;
+        margin-bottom: -10px;
+        height: 76px;
     }
 
     .managerName {
-        text-align: center;
-        font-size: 0.9em;
-        margin-bottom: 0.2em;
+        position: absolute;
+        top: 0;
+        white-space: nowrap;
+    }
+
+    .managerName.over {
+        left: calc(50% + 28px);
+    }
+
+    .managerName.under {
+        right: calc(50% + 28px);
     }
 
     .rowBars {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 12px;
+        right: 12px;
+        margin: auto 0;
+        height: 1.8em;
         display: grid;
         grid-template-columns: 1fr auto 1fr;
         align-items: center;
-        padding: 0 12px;
     }
 
     .side {
         position: relative;
-        height: 1.8em;
+        height: 100%;
         display: flex;
         align-items: center;
     }
@@ -139,7 +156,6 @@
         line-height: 1.8em;
         white-space: nowrap;
         z-index: 12;
-        font-size: 0.85em;
     }
 
     .side.right .barLabel {
@@ -155,28 +171,36 @@
     }
 
     @media (max-width: 600px) {
+        .barParent {
+            height: 57px;
+        }
         .managerName {
             font-size: 0.8em;
+        }
+        .managerName.over {
+            left: calc(50% + 22px);
+        }
+        .managerName.under {
+            right: calc(50% + 22px);
         }
         .teamAvatar {
             height: 30px;
             width: 30px;
         }
         .rowBars {
-            padding: 0 6px;
-        }
-        .side {
-            height: 1.4em;
+            left: 6px;
+            right: 6px;
+            height: 1.2em;
         }
         .barLabel {
-            line-height: 1.4em;
-            font-size: 0.7em;
+            line-height: 1.2em;
+            font-size: 0.8em;
         }
         .bar.over {
-            border-radius: 0 0.7em 0.7em 0;
+            border-radius: 0 0.6em 0.6em 0;
         }
         .bar.under {
-            border-radius: 0.7em 0 0 0.7em;
+            border-radius: 0.6em 0 0 0.6em;
         }
     }
 </style>
@@ -192,8 +216,8 @@
         <p class="message">No overachiever data for this season.</p>
     {:else}
         {#each rows as row}
-            <div class="row">
-                <div class="managerName clickable" onclick={() => goto(row)}>{nameFor(row)}</div>
+            <div class="barParent">
+                <span class="managerName clickable {row.ppg >= 0 ? 'over' : 'under'}" onclick={() => goto(row)}>{nameFor(row)}</span>
                 <div class="rowBars">
                     <div class="side left">
                         {#if row.ppg < 0}
