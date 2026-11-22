@@ -1,7 +1,8 @@
 <script>
 	import LinearProgress from '@smui/linear-progress';
 	import { getNflState, leagueName, getAwards, getLeagueTeamManagers, homepageText, managers, gotoManager, enableBlog, waitForAll } from '$lib/utils/helper';
-	import { Transactions, PowerRankings, HomePost} from '$lib/components';
+	import { Transactions, HomePost} from '$lib/components';
+	import TeamValue from '$lib/TeamValue/index.svelte';
 	import { getAvatarFromTeamManagers, getTeamFromTeamManagers } from '$lib/utils/helperFunctions/universalFunctions';
 
     const nflState = getNflState();
@@ -147,7 +148,7 @@
                 <HomePost />
             {/if}
         </div>
-        <PowerRankings />
+        <TeamValue />
     </div>
     
     <div class="leagueData">
