@@ -18,12 +18,6 @@ export const tabs = [
         key: 'matchups',
     },
     {
-        icon: 'swap_horiz',
-        label: 'Trades & Waivers',
-        dest: '/transactions',
-        key: 'transactions',
-    },
-    {
         icon: 'article',
         label: 'Blog',
         dest: '/blog',
@@ -39,6 +33,11 @@ export const tabs = [
                 icon: 'storage',
                 label: 'Rosters',
                 dest: '/rosters',
+            },
+            {
+                icon: 'swap_horiz',
+                label: 'Trades & Waivers',
+                dest: '/transactions',
             },
             {
                 icon: 'groups',
