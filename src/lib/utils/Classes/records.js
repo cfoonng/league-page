@@ -18,6 +18,9 @@ export class Records {
 		this.allTimeBiggestBlowouts = [];
 		this.allTimeClosestMatchups = [];
 		this.allTimeMostCombined = [];
+		this.incompleteYears = []; // seasons whose regular season isn't finished yet
+		this.mostSeasonLongMaxPF = [];
+		this.leastSeasonLongMaxPF = [];
 		this.lineupWeeks = []; // every regular season starting lineup: {year, week, rosterID, managers, starters, startersPoints}
 		this.lineupSlots = {}; // starting lineup slots for each year, e.g. {2025: ['QB', 'RB', ...]}
 		this.allTimeLeastCombined = [];
@@ -161,6 +164,14 @@ Records.prototype.addAllTimeMatchupDifferentials = function(matchupDifferentials
 
 
 /**
+ * Marks a season whose regular season still has games left to play.
+ * @param {int} year
+ */
+Records.prototype.markIncompleteYear = function(year) {
+    if(!this.incompleteYears.includes(year)) this.incompleteYears.push(year);
+}
+
+/**
  * Adds one team's starting lineup for one week (used for position contributions).
  * @param {Object} entry {year, week, rosterID, managers, starters, startersPoints}
  */
@@ -218,6 +229,24 @@ Records.prototype.addSeasonWeekRecord = function(entry) {
     this.mostSeasonLongPoints = mostSeasonLongPoints;
     this.leastSeasonLongPoints = leastSeasonLongPoints;
 
+    // season-long MaxPF (Sleeper's potential points), ranked by MaxPF per game
+    const seasonMaxPF = [];
+    for(const rosterID in this.leagueRosterRecords) {
+        for(const season of this.leagueRosterRecords[rosterID].years) {
+            const games = season.wins + season.losses + season.ties;
+            if(!season.potentialPoints || !games) continue;
+            seasonMaxPF.push({
+                rosterID: season.rosterID,
+                year: season.year,
+                maxPF: season.potentialPoints,
+                maxPFPerGame: Math.round(season.potentialPoints / games * 100) / 100,
+            });
+        }
+    }
+    const [mostSeasonLongMaxPF, leastSeasonLongMaxPF] = sortHighAndLow(seasonMaxPF, 'maxPFPerGame');
+    this.mostSeasonLongMaxPF = mostSeasonLongMaxPF;
+    this.leastSeasonLongMaxPF = leastSeasonLongMaxPF;
+
     this.currentYear = currentYear;
     this.lastYear = lastYear;
 }
@@ -232,6 +261,9 @@ Records.prototype.returnRecords = function() {
         allTimeBiggestBlowouts: this.allTimeBiggestBlowouts,
         allTimeClosestMatchups: this.allTimeClosestMatchups,
         allTimeMostCombined: this.allTimeMostCombined,
+        mostSeasonLongMaxPF: this.mostSeasonLongMaxPF,
+        leastSeasonLongMaxPF: this.leastSeasonLongMaxPF,
+        incompleteYears: this.incompleteYears,
         lineupWeeks: this.lineupWeeks,
         lineupSlots: this.lineupSlots,
         allTimeLeastCombined: this.allTimeLeastCombined,
