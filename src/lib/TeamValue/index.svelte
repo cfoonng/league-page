@@ -11,7 +11,7 @@
     // sortable value columns: [key in the JSON, column / button label]
     const COLUMNS = [
         ['total', 'Team'],
-        ['players', 'Team (no picks)'],
+        ['players', 'Players Only'],
         ['starters', 'Starters'],
         ['QB', 'QB'],
         ['RB', 'RB'],
