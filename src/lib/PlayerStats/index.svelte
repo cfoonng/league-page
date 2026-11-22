@@ -18,7 +18,10 @@
     let leagueTeamManagers = $state(null);
     let loadError = $state(null);
 
-    let display = $state('allTime');   // 'allTime' or a year
+    // each section has its own 'allTime' or year choice
+    let display = $state('allTime');       // Player Stats tables
+    let moveDisplay = $state('allTime');   // Start/Bench This MF
+    let jitDisplay = $state('allTime');    // JIT Tracker (All-Time = most recent season)
     let position = $state('ALL');
 
     const hasPlayerPoints = (records) =>
@@ -85,8 +88,9 @@
 
     // ---- Start/Bench This MF (season / all-time only, no position filter) ----
     let moves = $derived(lineupWeeks && players ? findMoves(lineupWeeks, lineupSlots, positionOf) : {starts: [], benches: []});
-    let startRows = $derived(summarizeMoves(moves.starts, {allTime: display == 'allTime', year: selectedYear}).slice(0, TOP_N));
-    let benchRows = $derived(summarizeMoves(moves.benches, {allTime: display == 'allTime', year: selectedYear}).slice(0, TOP_N));
+    let moveYear = $derived(moveDisplay == 'allTime' ? null : moveDisplay);
+    let startRows = $derived(summarizeMoves(moves.starts, {allTime: moveDisplay == 'allTime', year: moveYear}).slice(0, TOP_N));
+    let benchRows = $derived(summarizeMoves(moves.benches, {allTime: moveDisplay == 'allTime', year: moveYear}).slice(0, TOP_N));
 
     // all-time rows are per manager; season rows are per roster
     const moveManager = (row) => row.managerID
@@ -112,7 +116,7 @@
             .catch(() => acqError = true);
     });
 
-    let jitSeason = $derived(display == 'allTime' ? years[0] : display);
+    let jitSeason = $derived(jitDisplay == 'allTime' ? years[0] : jitDisplay);
     let jitRowsShown = $derived(players && refSeason && jitSeason ? jitRows({
         seasons, games, players,
         season: jitSeason,
@@ -242,6 +246,21 @@
     }
 </style>
 
+{#snippet yearPicker(current, pick)}
+    <div class="buttonHolder">
+        <Group variant="outlined">
+            <Button class="selectionButtons" onclick={() => pick('allTime')} variant="{current == 'allTime' ? 'raised' : 'outlined'}">
+                <Label>All-Time</Label>
+            </Button>
+            {#each years as year}
+                <Button class="selectionButtons" onclick={() => pick(year)} variant="{current == year ? 'raised' : 'outlined'}">
+                    <Label>{year}</Label>
+                </Button>
+            {/each}
+        </Group>
+    </div>
+{/snippet}
+
 <div class="playerStats">
     <h4>Player Stats</h4>
 
@@ -254,18 +273,7 @@
         </div>
     {:else}
         <!-- All-Time or a single season -->
-        <div class="buttonHolder">
-            <Group variant="outlined">
-                <Button class="selectionButtons" onclick={() => display = 'allTime'} variant="{display == 'allTime' ? 'raised' : 'outlined'}">
-                    <Label>All-Time</Label>
-                </Button>
-                {#each years as year}
-                    <Button class="selectionButtons" onclick={() => display = year} variant="{display == year ? 'raised' : 'outlined'}">
-                        <Label>{year}</Label>
-                    </Button>
-                {/each}
-            </Group>
-        </div>
+        {@render yearPicker(display, (v) => display = v)}
 
         <!-- position filter -->
         <div class="buttonHolder">
@@ -374,6 +382,7 @@
 
         <h4>Start/Bench This MF</h4>
         <p class="sectionNote">Starters who are frequently outscored by bench players, and bench players who frequently outscore starters</p>
+        {@render yearPicker(moveDisplay, (v) => moveDisplay = v)}
 
         <div class="tables">
             {#each [['Start this MF', startRows, 'Games Benched'], ['Bench this MF', benchRows, 'Games Started']] as [title, moveRows, gamesLabel]}
@@ -383,7 +392,7 @@
                         <Head>
                             <Row>
                                 <Cell class="header tableHeader" colspan=6>
-                                    {title} ({display == 'allTime' ? 'All-Time' : display})
+                                    {title} ({moveDisplay == 'allTime' ? 'All-Time' : moveDisplay})
                                 </Cell>
                             </Row>
                             <Row>
@@ -421,6 +430,7 @@
         </div>
 
         <h4>JIT Tracker</h4>
+        {@render yearPicker(jitDisplay, (v) => jitDisplay = v)}
 
         <div class="buttonHolder">
             <Group variant="outlined">
