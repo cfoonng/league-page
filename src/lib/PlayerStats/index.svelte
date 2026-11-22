@@ -7,10 +7,12 @@
     import { getLeagueRecords, getLeagueTeamManagers, loadPlayers, waitForAll } from '$lib/utils/helper';
     import { renderManagerNames } from '$lib/utils/helperFunctions/universalFunctions';
     import { POSITIONS, allPlayerGames, seasonTotals, filterBy, topN } from './playerStatsMath';
+    import { findMoves, summarizeMoves } from './startBenchMath';
 
     const TOP_N = 10;
 
     let lineupWeeks = $state(null);
+    let lineupSlots = $state({});
     let players = $state(null);
     let leagueTeamManagers = $state(null);
     let loadError = $state(null);
@@ -31,6 +33,7 @@
                     if(hasPlayerPoints(records)) lineupWeeks = records.regularSeasonData.lineupWeeks;
                     records = await getLeagueRecords(true);
                 }
+                lineupSlots = records.regularSeasonData?.lineupSlots || {};
                 lineupWeeks = records.regularSeasonData?.lineupWeeks || [];
             })
             .catch(err => loadError = err?.message || 'Something went wrong');
@@ -67,6 +70,16 @@
     const seasonManager = (row) => row.rosterIDs.length == 1 ? teamName(row.rosterIDs[0], row.year) : null;
 
     const fmt = (n) => (Math.round(n * 100) / 100).toFixed(2);
+
+    // ---- Start/Bench This MF (season / all-time only, no position filter) ----
+    let moves = $derived(lineupWeeks && players ? findMoves(lineupWeeks, lineupSlots, positionOf) : {starts: [], benches: []});
+    let startRows = $derived(summarizeMoves(moves.starts, {allTime: display == 'allTime', year: selectedYear}).slice(0, TOP_N));
+    let benchRows = $derived(summarizeMoves(moves.benches, {allTime: display == 'allTime', year: selectedYear}).slice(0, TOP_N));
+
+    // all-time rows are per manager; season rows are per roster
+    const moveManager = (row) => row.managerID
+        ? (leagueTeamManagers?.users?.[row.managerID]?.display_name || '')
+        : teamName(row.rosterID, row.year);
 
     let seasonTitle = $derived(display == 'allTime' ? 'All-Time Single Season Scoring Records' : `${display} Season Leaders`);
     let gameTitle = $derived(display == 'allTime' ? 'All-Time Single Game Performances' : `${display} Single Game Performances`);
@@ -274,6 +287,48 @@
                 </DataTable>
                 </div>
             </div>
+        </div>
+
+        <h4>Start/Bench This MF</h4>
+
+        <div class="tables">
+            {#each [['Start this MF', startRows, 'Games Benched'], ['Bench this MF', benchRows, 'Games Started']] as [title, moveRows, gamesLabel]}
+                <div class="panel">
+                    <div class="tableScroll">
+                    <DataTable class="playerTable">
+                        <Head>
+                            <Row>
+                                <Cell class="header tableHeader" colspan=6>
+                                    {title} ({display == 'allTime' ? 'All-Time' : display})
+                                </Cell>
+                            </Row>
+                            <Row>
+                                <Cell class="header"></Cell>
+                                <Cell class="header">Player</Cell>
+                                <Cell class="header">Manager</Cell>
+                                <Cell class="header">Pts Missed</Cell>
+                                <Cell class="header">PPG Missed</Cell>
+                                <Cell class="header">{gamesLabel}</Cell>
+                            </Row>
+                        </Head>
+                        <Body>
+                            {#each moveRows as row, ix}
+                                <Row>
+                                    <Cell>{ix + 1}</Cell>
+                                    <Cell>{playerName(row.pid)}<span class="pos">{positionOf(row.pid) || ''}</span></Cell>
+                                    <Cell>{moveManager(row)}</Cell>
+                                    <Cell>{fmt(row.ptsMissed)}</Cell>
+                                    <Cell>{fmt(row.ppgMissed)}</Cell>
+                                    <Cell>{row.games}</Cell>
+                                </Row>
+                            {:else}
+                                <Row><Cell colspan=6>None yet.</Cell></Row>
+                            {/each}
+                        </Body>
+                    </DataTable>
+                    </div>
+                </div>
+            {/each}
         </div>
     {/if}
 </div>
