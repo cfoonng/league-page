@@ -27,9 +27,9 @@
             .sort((a, b) => b.ppg - a.ppg)
     );
 
-    // Bars grow out from the center; the biggest gap (either way) reaches the edge
+    // Bars grow out from the avatar in the middle; the biggest gap (either way) reaches the edge
     let maxAbs = $derived(rows.length ? Math.max(...rows.map(r => Math.abs(r.ppg))) || 1 : 1);
-    const halfWidth = (v) => Math.abs(v) / maxAbs * 50;
+    const sideWidth = (v) => Math.abs(v) / maxAbs * 100;
 
     const userFor = (row) => row.managerID ? leagueTeamManagers.users[row.managerID] : null;
 
@@ -75,110 +75,79 @@
         color: var(--g999);
     }
 
-    .barParent {
-        position: relative;
-        margin-bottom: -10px;
-        height: 76px;
+    /* one row per manager: name on top (centered), then [under bar | avatar | over bar] */
+    .row {
+        padding: 0.35em 0;
     }
 
     .managerName {
-        position: absolute;
-        top: 0;
-        left: 80px;
+        text-align: center;
+        font-size: 0.9em;
+        margin-bottom: 0.2em;
+    }
+
+    .rowBars {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        padding: 0 12px;
+    }
+
+    .side {
+        position: relative;
+        height: 1.8em;
+        display: flex;
+        align-items: center;
+    }
+
+    .side.left {
+        justify-content: flex-end;
+    }
+
+    .side.right {
+        justify-content: flex-start;
     }
 
     .teamAvatar {
-        position: absolute;
-        left: 20px;
-        top: 0;
-        bottom: 0;
         height: 40px;
-        margin: auto;
+        width: 40px;
         border-radius: 50%;
         border: 2px solid;
-        z-index: 14;
         background-color: #fff;
-    }
-
-    .vCenter {
-        display: block;
-        height: 1.8em;
-        position: absolute;
-        width: 100%;
-        top: 0;
-        bottom: 0;
-        margin: auto 0;
-    }
-
-    .statBars {
-        display: flex;
-        margin: 0 auto;
-        height: 100%;
-    }
-
-    .leftSpacer {
-        width: 70px;
-        height: 1px;
-        display: inline-block;
-    }
-
-    .rightSpacer {
-        width: 20px;
-        height: 1px;
-        display: inline-block;
-    }
-
-    .bars {
-        flex-grow: 2;
-        position: relative;
-        height: 100%;
-    }
-
-    /* the zero line down the middle */
-    .centerLine {
-        position: absolute;
-        left: 50%;
-        top: -0.4em;
-        bottom: -0.4em;
-        width: 1px;
-        background-color: var(--g999);
-        opacity: 0.6;
+        margin: 0 4px;
+        z-index: 14;
     }
 
     .bar {
-        position: absolute;
-        top: 0;
         height: 100%;
     }
 
     .bar.over {
-        left: 50%;
         border-radius: 0 0.9em 0.9em 0;
         background-color: var(--achieverOver, #7cc68a);
     }
 
     .bar.under {
-        right: 50%;
         border-radius: 0.9em 0 0 0.9em;
         background-color: var(--achieverUnder, #ef8f8f);
     }
 
-    /* label starts at the zero line and reads outward over the bar */
+    /* label starts next to the avatar and reads outward over the bar */
     .barLabel {
         position: absolute;
         top: 0;
         line-height: 1.8em;
         white-space: nowrap;
         z-index: 12;
-        font-size: 0.9em;
+        font-size: 0.85em;
     }
 
-    .barLabel.over {
-        left: calc(50% + 8px);
+    .side.right .barLabel {
+        left: 8px;
     }
 
-    .barLabel.under {
-        right: calc(50% + 8px);
+    .side.left .barLabel {
+        right: 8px;
     }
 
     .clickable {
@@ -186,35 +155,28 @@
     }
 
     @media (max-width: 600px) {
-        .barParent {
-            height: 57px;
-        }
         .managerName {
-            left: 60px;
             font-size: 0.8em;
         }
         .teamAvatar {
-            left: 10px;
             height: 30px;
+            width: 30px;
         }
-        .leftSpacer {
-            width: 50px;
+        .rowBars {
+            padding: 0 6px;
         }
-        .rightSpacer {
-            width: 10px;
-        }
-        .vCenter {
-            height: 1.2em;
+        .side {
+            height: 1.4em;
         }
         .barLabel {
-            line-height: 1.2em;
+            line-height: 1.4em;
             font-size: 0.7em;
         }
         .bar.over {
-            border-radius: 0 0.6em 0.6em 0;
+            border-radius: 0 0.7em 0.7em 0;
         }
         .bar.under {
-            border-radius: 0.6em 0 0 0.6em;
+            border-radius: 0.7em 0 0 0.7em;
         }
     }
 </style>
@@ -230,18 +192,21 @@
         <p class="message">No overachiever data for this season.</p>
     {:else}
         {#each rows as row}
-            <div class="barParent">
-                <img alt="team avatar" onclick={() => goto(row)} style="border-color: {row.ppg >= 0 ? 'var(--achieverOver, #7cc68a)' : 'var(--achieverUnder, #ef8f8f)'};" class="teamAvatar clickable" src={avatarFor(row)} />
-                <span class="managerName clickable" onclick={() => goto(row)}>{nameFor(row)}</span>
-                <div class="vCenter">
-                    <div class="statBars">
-                        <div class="leftSpacer"></div>
-                        <div class="bars">
-                            <div class="centerLine"></div>
-                            <div class="bar {row.ppg >= 0 ? 'over' : 'under'}" style="width: {halfWidth(row.ppg)}%;"></div>
-                            <span class="barLabel {row.ppg >= 0 ? 'over' : 'under'}">{labelFor(row.ppg)}</span>
-                        </div>
-                        <div class="rightSpacer"></div>
+            <div class="row">
+                <div class="managerName clickable" onclick={() => goto(row)}>{nameFor(row)}</div>
+                <div class="rowBars">
+                    <div class="side left">
+                        {#if row.ppg < 0}
+                            <div class="bar under" style="width: {sideWidth(row.ppg)}%;"></div>
+                            <span class="barLabel">{labelFor(row.ppg)}</span>
+                        {/if}
+                    </div>
+                    <img alt="team avatar" onclick={() => goto(row)} style="border-color: {row.ppg >= 0 ? 'var(--achieverOver, #7cc68a)' : 'var(--achieverUnder, #ef8f8f)'};" class="teamAvatar clickable" src={avatarFor(row)} />
+                    <div class="side right">
+                        {#if row.ppg >= 0}
+                            <div class="bar over" style="width: {sideWidth(row.ppg)}%;"></div>
+                            <span class="barLabel">{labelFor(row.ppg)}</span>
+                        {/if}
                     </div>
                 </div>
             </div>
