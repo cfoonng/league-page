@@ -76,25 +76,22 @@
     }
 
     /* one row per manager, same height as the Lineup Efficiency rows:
-       the avatar sits in the middle, bars grow out from it, and the name sits above the bar */
+       the avatar sits in the middle with the name above it, and bars grow out from it */
     .barParent {
         position: relative;
         margin-bottom: -10px;
         height: 76px;
     }
 
+    /* name centered above the avatar */
     .managerName {
         position: absolute;
         top: 0;
+        left: 50%;
+        transform: translateX(-50%);
         white-space: nowrap;
-    }
-
-    .managerName.over {
-        left: calc(50% + 28px);
-    }
-
-    .managerName.under {
-        right: calc(50% + 28px);
+        line-height: 1;
+        font-size: 0.85em;
     }
 
     .rowBars {
@@ -104,7 +101,7 @@
         left: 12px;
         right: 12px;
         margin: auto 0;
-        height: 1.8em;
+        height: 44px; /* avatar height incl. border */
         display: grid;
         grid-template-columns: 1fr auto 1fr;
         align-items: center;
@@ -112,7 +109,7 @@
 
     .side {
         position: relative;
-        height: 100%;
+        height: 1.8em;
         display: flex;
         align-items: center;
     }
@@ -152,8 +149,8 @@
     /* label starts next to the avatar and reads outward over the bar */
     .barLabel {
         position: absolute;
-        top: 0;
-        line-height: 1.8em;
+        top: 50%;
+        transform: translateY(-50%);
         white-space: nowrap;
         z-index: 12;
     }
@@ -175,13 +172,7 @@
             height: 57px;
         }
         .managerName {
-            font-size: 0.8em;
-        }
-        .managerName.over {
-            left: calc(50% + 22px);
-        }
-        .managerName.under {
-            right: calc(50% + 22px);
+            font-size: 0.75em;
         }
         .teamAvatar {
             height: 30px;
@@ -190,10 +181,12 @@
         .rowBars {
             left: 6px;
             right: 6px;
+            height: 34px;
+        }
+        .side {
             height: 1.2em;
         }
         .barLabel {
-            line-height: 1.2em;
             font-size: 0.8em;
         }
         .bar.over {
@@ -217,7 +210,7 @@
     {:else}
         {#each rows as row}
             <div class="barParent">
-                <span class="managerName clickable {row.ppg >= 0 ? 'over' : 'under'}" onclick={() => goto(row)}>{nameFor(row)}</span>
+                <span class="managerName clickable" onclick={() => goto(row)}>{nameFor(row)}</span>
                 <div class="rowBars">
                     <div class="side left">
                         {#if row.ppg < 0}
