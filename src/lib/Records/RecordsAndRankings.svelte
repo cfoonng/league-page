@@ -657,6 +657,8 @@
     {/if}
 </div>
 
+<!-- Rankings are only shown on Season Records, not All-Time Records -->
+{#if !allTime}
 <h4>{prefix} {key == "playoffData" ? "Playoff " : ""}Rankings</h4>
 
 {#if graphs.length}
@@ -812,3 +814,4 @@
         {/each}
     </Group>
 </div>
+{/if}

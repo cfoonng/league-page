@@ -30,7 +30,8 @@
         leagueData = newRecords;
     }
 
-    let key = $state("regularSeasonData");
+    // Regular season only (the Playoffs option was removed)
+    const key = "regularSeasonData";
 
     $effect(() => {
         if(!leagueData || !leagueData[key]) return;
@@ -108,15 +109,6 @@
 <div class="rankingsWrapper">
 
     <div class="buttonHolder">
-        <Group variant="outlined">
-            <Button class="selectionButtons" onclick={() => key = "regularSeasonData"} variant="{key == "regularSeasonData" ? "raised" : "outlined"}">
-                <Label>Regular Season</Label>
-            </Button>
-            <Button class="selectionButtons" onclick={() => key = "playoffData"} variant="{key == "playoffData" ? "raised" : "outlined"}">
-                <Label>Playoffs</Label>
-            </Button>
-        </Group>
-        <br />
         <Group variant="outlined">
             <Button class="selectionButtons" onclick={() => display = "allTime"} variant="{display == "allTime" ? "raised" : "outlined"}">
                 <Label>All-Time Records</Label>
