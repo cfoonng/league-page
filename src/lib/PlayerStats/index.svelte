@@ -311,16 +311,18 @@
         <!-- All-Time or a single season -->
         {@render yearPicker(display, (v) => display = v)}
 
-        <!-- position filter -->
-        <div class="buttonHolder">
-            <Group variant="outlined">
-                {#each POSITIONS as pos}
-                    <Button class="selectionButtons" onclick={() => position = pos} variant="{position == pos ? 'raised' : 'outlined'}">
-                        <Label>{pos}</Label>
-                    </Button>
-                {/each}
-            </Group>
-        </div>
+        <!-- position filter: two rows -->
+        {#each [['ALL', 'QB', 'RB', 'WR'], ['TE', 'K', 'DEF']] as posRow}
+            <div class="buttonHolder">
+                <Group variant="outlined">
+                    {#each posRow as pos}
+                        <Button class="selectionButtons" onclick={() => position = pos} variant="{position == pos ? 'raised' : 'outlined'}">
+                            <Label>{pos}</Label>
+                        </Button>
+                    {/each}
+                </Group>
+            </div>
+        {/each}
 
         <div class="tables">
             <!-- left: best seasons (All-Time) or season leaders -->
