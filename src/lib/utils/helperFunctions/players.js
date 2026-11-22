@@ -2,8 +2,11 @@ import { get } from 'svelte/store';
 import {players} from '$lib/stores';
 import { browser } from '$app/environment';
 
+// player data saved before years of experience (ye) was added gets re-downloaded once
+const hasExp = (data) => !!data && Object.values(data).some(p => p && p.ye !== undefined);
+
 export const loadPlayers = async (servFetch, refresh = false) => {     
-	if(get(players)[1426]) {
+	if(get(players)[1426] && hasExp(get(players))) {
 		return {
             players: get(players),
             stale: false
@@ -18,6 +21,10 @@ export const loadPlayers = async (servFetch, refresh = false) => {
     if(browser) {
         playersInfo = JSON.parse(localStorage.getItem("playersInfo"));
         expiration = parseInt(localStorage.getItem("expiration"));
+        if(!hasExp(playersInfo)) {
+            playersInfo = null;
+            expiration = null;
+        }
     }
 
     if(playersInfo && playersInfo[1426] && expiration && now > expiration && !refresh) {
