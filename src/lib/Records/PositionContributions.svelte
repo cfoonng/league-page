@@ -134,7 +134,7 @@
                     <Cell class="header rank"></Cell>
                     <Cell class="header">Manager</Cell>
                     {#each ROOMS as room}
-                        <Cell class="header"><span class={selectedRoom == room ? 'selectedHeader' : ''}>{room} Room</span></Cell>
+                        <Cell class="header"><span class={selectedRoom == room ? 'selectedHeader' : ''}>{room}<br />Room</span></Cell>
                     {/each}
                 </Row>
             </Head>
