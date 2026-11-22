@@ -94,13 +94,13 @@ export const loadAcquisitions = async (leagueID) => {
 
 const pad = (n) => String(n).padStart(2, '0');
 
-// "R1-03 (rookie)", "R8-07 (startup)" or "UDFA" (never drafted in this league)
+// "R1-03" (rookie draft), "R8-07 (startup)" or "UDFA" (never drafted in this league)
 export const draftLabel = (pid, season, acquisitions) => {
     const pick = (acquisitions?.picks || [])
         .filter(p => p.pid == pid && p.season <= season)
         .sort((a, b) => b.time - a.time)[0];
     if(!pick) return 'UDFA';
-    return `R${pick.round}-${pad(pick.pickInRound)} (${pick.startup ? 'startup' : 'rookie'})`;
+    return `R${pick.round}-${pad(pick.pickInRound)}${pick.startup ? ' (startup)' : ''}`;
 };
 
 // how this roster got him: its most recent draft pick / trade / waiver add of him, up to that season

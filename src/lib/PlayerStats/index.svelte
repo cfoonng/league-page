@@ -8,6 +8,7 @@
     import { renderManagerNames } from '$lib/utils/helperFunctions/universalFunctions';
     import { POSITIONS, allPlayerGames, seasonTotals, filterBy, topN } from './playerStatsMath';
     import { findMoves, summarizeMoves } from './startBenchMath';
+    import { loadPlayoffWeeks } from '$lib/RingOfHonor/ringPlayoffs';
     import { JIT_GROUPS, loadAcquisitions, draftLabel, acquisitionLabel, jitRows } from './jitMath';
 
     const TOP_N = 10;
@@ -19,8 +20,9 @@
     let loadError = $state(null);
 
     // each section has its own 'allTime' or year choice
-    let display = $state('allTime');       // Player Stats tables
-    let moveDisplay = $state('allTime');   // Start/Bench This MF
+    // null = the newest season (the default); 'allTime' or a year once a button is clicked
+    let display = $state(null);            // Player Stats tables
+    let moveDisplay = $state(null);        // Start/Bench This MF
     let jitDisplay = $state('allTime');    // JIT Tracker (All-Time = most recent season)
     let position = $state('ALL');
 
@@ -43,15 +45,32 @@
             .catch(err => loadError = err?.message || 'Something went wrong');
     });
 
+    // playoff games (winners bracket) for Single Game Performances
+    let playoffWeeks = $state([]);
+    $effect(() => {
+        loadPlayoffWeeks(leagueID)
+            .then(entries => playoffWeeks = (entries || []).filter(e => e.playersPoints))
+            .catch(() => playoffWeeks = []);
+    });
+
     let games = $derived(lineupWeeks ? allPlayerGames(lineupWeeks) : []);
     let seasons = $derived(seasonTotals(games));
     let years = $derived([...new Set(games.map(g => g.year))].sort((a, b) => b - a));
 
     const positionOf = (pid) => players?.[pid]?.pos;
 
+    // the newest season until a button is clicked
+    $effect(() => {
+        if(years.length) {
+            if(display === null) display = years[0];
+            if(moveDisplay === null) moveDisplay = years[0];
+        }
+    });
+
+    let playoffGames = $derived(allPlayerGames(playoffWeeks).map(g => ({...g, playoff: true})));
     let selectedYear = $derived(display == 'allTime' ? null : display);
     let seasonRows = $derived(topN(filterBy(seasons, {year: selectedYear, position, positionOf}), TOP_N));
-    let gameRows = $derived(topN(filterBy(games, {year: selectedYear, position, positionOf}), TOP_N));
+    let gameRows = $derived(topN(filterBy([...games, ...playoffGames], {year: selectedYear, position, positionOf}), TOP_N));
 
 
     const playerName = (pid) => {
@@ -71,7 +90,8 @@
     };
 
     // the manager he played for that season; null if he was on more than one roster
-    const seasonManager = (row) => row.rosterIDs.length == 1 ? teamName(row.rosterIDs[0], row.year) : null;
+    // whoever had him most recently that season
+    const seasonManager = (row) => teamName(row.rosterIDs[row.rosterIDs.length - 1], row.year);
 
     // Sleeper headshot (team logo for defenses), same images the Rosters page uses
     const playerPhoto = (pid) => positionOf(pid) == 'DEF'
@@ -169,9 +189,6 @@
         overflow-x: auto;
     }
 
-    .multiple {
-        color: var(--g999);
-    }
 
     :global(.playerTable) {
         width: 100%;
@@ -183,12 +200,6 @@
         text-align: center;
     }
 
-    .sectionNote {
-        text-align: center;
-        font-style: italic;
-        color: var(--g999);
-        margin: -0.5em 0 1em;
-    }
 
     .subTitle {
         display: block;
@@ -249,16 +260,16 @@
 {#snippet yearPicker(current, pick, showAllTime = true)}
     <div class="buttonHolder">
         <Group variant="outlined">
-            {#if showAllTime}
-            <Button class="selectionButtons" onclick={() => pick('allTime')} variant="{current == 'allTime' ? 'raised' : 'outlined'}">
-                <Label>All-Time</Label>
-            </Button>
-            {/if}
             {#each years as year}
                 <Button class="selectionButtons" onclick={() => pick(year)} variant="{current == year ? 'raised' : 'outlined'}">
                     <Label>{year}</Label>
                 </Button>
             {/each}
+            {#if showAllTime}
+            <Button class="selectionButtons" onclick={() => pick('allTime')} variant="{current == 'allTime' ? 'raised' : 'outlined'}">
+                <Label>All-Time</Label>
+            </Button>
+            {/if}
         </Group>
     </div>
 {/snippet}
@@ -321,11 +332,7 @@
                                     </div>
                                 </Cell>
                                 <Cell>
-                                    {#if seasonManager(row) !== null}
-                                        {seasonManager(row)}
-                                    {:else}
-                                        <i class="multiple">multiple</i>
-                                    {/if}
+                                    {seasonManager(row)}
                                 </Cell>
                                 {#if display == 'allTime'}
                                     <Cell>{row.year}</Cell>
@@ -348,7 +355,7 @@
                         <Row>
                             <Cell class="header tableHeader" colspan=5>
                                 {gameTitle}{posLabel}
-                                <span class="subTitle">Regular season, starters and bench</span>
+                                <span class="subTitle">Regular season and playoffs, starters and bench</span>
                             </Cell>
                         </Row>
                         <Row>
@@ -370,7 +377,7 @@
                                     </div>
                                 </Cell>
                                 <Cell>{teamName(row.rosterID, row.year)}</Cell>
-                                <Cell>{row.year} Week {row.week}</Cell>
+                                <Cell>{row.year} Week {row.week}{#if row.playoff}<span class="pos">playoffs</span>{/if}</Cell>
                                 <Cell>{fmt(row.pts)}</Cell>
                             </Row>
                         {:else}
@@ -383,11 +390,10 @@
         </div>
 
         <h4>Start/Bench This MF</h4>
-        <p class="sectionNote">Starters who are frequently outscored by bench players, and bench players who frequently outscore starters</p>
         {@render yearPicker(moveDisplay, (v) => moveDisplay = v)}
 
         <div class="tables">
-            {#each [['Start this MF', startRows, 'Games Benched'], ['Bench this MF', benchRows, 'Games Started']] as [title, moveRows, gamesLabel]}
+            {#each [['Start this MF', startRows, 'Games Benched', 'Bench players who frequently outscore starters'], ['Bench this MF', benchRows, 'Games Started', 'Starters who are frequently outscored by bench players']] as [title, moveRows, gamesLabel, note]}
                 <div class="panel">
                     <div class="tableScroll">
                     <DataTable class="playerTable">
@@ -395,6 +401,7 @@
                             <Row>
                                 <Cell class="header tableHeader" colspan=6>
                                     {title} ({moveDisplay == 'allTime' ? 'All-Time' : moveDisplay})
+                                    <span class="subTitle">{note}</span>
                                 </Cell>
                             </Row>
                             <Row>
