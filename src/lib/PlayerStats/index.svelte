@@ -444,7 +444,7 @@
                                     </div>
                                 </Cell>
                                 <Cell>{teamName(row.rosterID, row.year)}</Cell>
-                                <Cell>{row.year} Week {row.week}{#if row.playoff}<span class="pos">playoffs</span>{/if}</Cell>
+                                <Cell>{row.year} Wk {row.week}</Cell>
                                 <Cell>{fmt(row.pts)}</Cell>
                             </Row>
                         {:else}
