@@ -83,7 +83,7 @@
         {id: 'scoring', title: 'Scoring Records', color: 'var(--sectionFour)'},
     ];
     // null = the newest season (the default); 'allTime' or a year once a button is clicked
-    let views = $state({lineups: null, positions: null, seasons: null, scoring: null});
+    let views = $state({lineups: null, positions: null, seasons: 'allTime', scoring: 'allTime'});
     const viewOf = (id) => views[id] ?? Number(currentYear);
 
     let years = $derived.by(() => {
