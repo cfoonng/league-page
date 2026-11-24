@@ -21,8 +21,8 @@
 
     // each section has its own 'allTime' or year choice
     // null = the newest season (the default); 'allTime' or a year once a button is clicked
-    let display = $state(null);            // Player Stats tables
-    let moveDisplay = $state(null);        // Start/Bench This MF
+    let display = $state('allTime');       // Player Records tables
+    let moveDisplay = $state('allTime');   // Start/Bench This MF
     let jitDisplay = $state('allTime');    // JIT Tracker (All-Time = most recent season)
     let position = $state('ALL');
 
@@ -158,11 +158,28 @@
             .then(data => missedData = data)
             .catch(() => missedData = null);
     });
-    let missedRows = $derived((missedData?.rows || [])
-        .filter(r => selectedYear === null || r.year == selectedYear)
-        .filter(r => position == 'ALL' || positionOf(r.pid) == position)
-        .slice().sort((a, b) => (b.missed - a.missed) || (b.year - a.year))
-        .slice(0, TOP_N));
+    // who owned a roster in a season (so All-Time can add up a player's misses per manager)
+    const ownerKey = (rosterID, year) => {
+        const managers = leagueTeamManagers?.teamManagersMap?.[year]?.[rosterID]?.managers;
+        return managers?.length ? [...managers].sort().join('|') : `roster${rosterID}`;
+    };
+    let missedRows = $derived.by(() => {
+        let rows = (missedData?.rows || [])
+            .filter(r => selectedYear === null || r.year == selectedYear)
+            .filter(r => position == 'ALL' || positionOf(r.pid) == position);
+        if(display == 'allTime') {
+            // one row per player + manager, all seasons added together
+            const grouped = {};
+            for(const r of rows) {
+                const key = `${r.pid}~${ownerKey(r.rosterID, r.year)}`;
+                const g = grouped[key] || (grouped[key] = {pid: r.pid, missed: 0, rosterID: r.rosterID, year: r.year});
+                g.missed += r.missed;
+                if(r.year > g.year) { g.year = r.year; g.rosterID = r.rosterID; }   // name as of his latest season there
+            }
+            rows = Object.values(grouped);
+        }
+        return rows.slice().sort((a, b) => (b.missed - a.missed) || (b.year - a.year)).slice(0, TOP_N);
+    });
     let missedTitle = $derived(display == 'allTime' ? 'All-Time Most Games Missed' : `${display} Most Games Missed`);
 
     let seasonTitle = $derived(display == 'allTime' ? 'All-Time Single Season Scoring Records' : `${display} Season Leaders`);
@@ -355,7 +372,7 @@
 {/snippet}
 
 <div class="playerStats">
-    <h4>Player Stats</h4>
+    <h4>Player Records</h4>
 
     {#if loadError}
         <p class="message">Something went wrong: {loadError}</p>
@@ -428,12 +445,12 @@
                 </DataTable>
                 </div>
 
-                <!-- below: most games missed in a season -->
+                <!-- below: most games missed (a season, or All-Time per player + manager) -->
                 <div class="tableScroll stacked">
                 <DataTable class="playerTable">
                     <Head>
                         <Row>
-                            <Cell class="header tableHeader" colspan={display == 'allTime' ? 5 : 4}>
+                            <Cell class="header tableHeader" colspan=4>
                                 {missedTitle}{posLabel}
                                 <span class="subTitle">Regular season weeks on a roster when his NFL team played and he didn't</span>
                             </Cell>
@@ -442,9 +459,6 @@
                             <Cell class="header"></Cell>
                             <Cell class="header">Player</Cell>
                             <Cell class="header">Manager</Cell>
-                            {#if display == 'allTime'}
-                                <Cell class="header">Year</Cell>
-                            {/if}
                             <Cell class="header">Games<br />Missed</Cell>
                         </Row>
                     </Head>
@@ -459,13 +473,10 @@
                                     </div>
                                 </Cell>
                                 <Cell>{teamName(row.rosterID, row.year)}</Cell>
-                                {#if display == 'allTime'}
-                                    <Cell>{row.year}</Cell>
-                                {/if}
                                 <Cell>{row.missed}</Cell>
                             </Row>
                         {:else}
-                            <Row><Cell colspan={display == 'allTime' ? 5 : 4}>{missedData ? 'No missed games.' : 'Upload games_missed.json to static/data/ to fill this in.'}</Cell></Row>
+                            <Row><Cell colspan=4>{missedData ? 'No missed games.' : 'Upload games_missed.json to static/data/ to fill this in.'}</Cell></Row>
                         {/each}
                     </Body>
                 </DataTable>
