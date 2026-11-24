@@ -30,7 +30,7 @@
     let rostersData = $state(null);
     let leagueTeamManagers = $state(null);
     let loadError = $state(false);
-    let sortKey = $state('total');
+    let sortKey = $state('record');
 
     $effect(() => {
         waitForAll(
