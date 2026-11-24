@@ -452,7 +452,7 @@
                         <Row>
                             <Cell class="header tableHeader" colspan=4>
                                 {missedTitle}{posLabel}
-                                <span class="subTitle">Regular season weeks on a roster when his NFL team played and he didn't</span>
+                                <span class="subTitle">Regular season games missed due to injury</span>
                             </Cell>
                         </Row>
                         <Row>
