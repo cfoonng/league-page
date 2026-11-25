@@ -7,113 +7,6 @@
  ],
  "weeks": [
   {
-   "week": 0,
-   "label": "Preseason",
-   "fileDate": "2026-08-30",
-   "teams": [
-    {
-     "rosterID": 3,
-     "managerID": "1265033826942337024",
-     "team": "FatherK11",
-     "score": 165.12,
-     "rank": 1,
-     "wk15": 165.06,
-     "wk16": 164.86,
-     "wk17": 165.43
-    },
-    {
-     "rosterID": 8,
-     "managerID": "1265769112982786048",
-     "team": "CheckNate10",
-     "score": 162.51,
-     "rank": 2,
-     "wk15": 162.61,
-     "wk16": 162.07,
-     "wk17": 162.85
-    },
-    {
-     "rosterID": 6,
-     "managerID": "1265051241960964096",
-     "team": "confonger",
-     "score": 162.29,
-     "rank": 3,
-     "wk15": 162.37,
-     "wk16": 162.67,
-     "wk17": 161.84
-    },
-    {
-     "rosterID": 2,
-     "managerID": "1003557305339768832",
-     "team": "gjb31",
-     "score": 161.31,
-     "rank": 4,
-     "wk15": 162.2,
-     "wk16": 161.08,
-     "wk17": 160.66
-    },
-    {
-     "rosterID": 5,
-     "managerID": "1265035377249374208",
-     "team": "Marcusablock",
-     "score": 158.31,
-     "rank": 5,
-     "wk15": 158.27,
-     "wk16": 158.11,
-     "wk17": 158.56
-    },
-    {
-     "rosterID": 10,
-     "managerID": "1265959180385128448",
-     "team": "koru13",
-     "score": 156.96,
-     "rank": 6,
-     "wk15": 156.94,
-     "wk16": 157.15,
-     "wk17": 156.78
-    },
-    {
-     "rosterID": 1,
-     "managerID": "1264841066129932288",
-     "team": "Matt2001Martin",
-     "score": 156.61,
-     "rank": 7,
-     "wk15": 156.4,
-     "wk16": 156.52,
-     "wk17": 156.92
-    },
-    {
-     "rosterID": 4,
-     "managerID": "999465012592803840",
-     "team": "Libermaniacjr",
-     "score": 151.54,
-     "rank": 8,
-     "wk15": 150.89,
-     "wk16": 152.4,
-     "wk17": 151.33
-    },
-    {
-     "rosterID": 9,
-     "managerID": "852680448239869952",
-     "team": "maxabroms",
-     "score": 139.29,
-     "rank": 9,
-     "wk15": 139.6,
-     "wk16": 139.11,
-     "wk17": 139.17
-    },
-    {
-     "rosterID": 7,
-     "managerID": "1127702793260810240",
-     "team": "CeceRAIDERS",
-     "score": 130.89,
-     "rank": 10,
-     "wk15": 130.29,
-     "wk16": 131.33,
-     "wk17": 131.05
-    }
-   ]
-  },
-  {
    "week": 1,
    "label": "Week 1",
    "fileDate": "2026-09-08",
@@ -544,27 +437,134 @@
   {
    "week": 5,
    "label": "Week 5",
-   "fileDate": "2026-10-12",
+   "fileDate": "2026-10-07",
    "teams": [
     {
      "rosterID": 3,
      "managerID": "1265033826942337024",
      "team": "FatherK11",
-     "score": 189.13,
+     "score": 173.04,
      "rank": 1,
-     "wk15": 195.46,
-     "wk16": 187.37,
-     "wk17": 184.56
+     "wk15": 180.75,
+     "wk16": 170.41,
+     "wk17": 167.95
+    },
+    {
+     "rosterID": 1,
+     "managerID": "1264841066129932288",
+     "team": "Matt2001Martin",
+     "score": 164.15,
+     "rank": 2,
+     "wk15": 165.46,
+     "wk16": 161.07,
+     "wk17": 165.93
     },
     {
      "rosterID": 8,
      "managerID": "1265769112982786048",
      "team": "CheckNate10",
+     "score": 163.64,
+     "rank": 3,
+     "wk15": 159.91,
+     "wk16": 164.67,
+     "wk17": 166.35
+    },
+    {
+     "rosterID": 5,
+     "managerID": "1265035377249374208",
+     "team": "Marcusablock",
+     "score": 161.78,
+     "rank": 4,
+     "wk15": 161.7,
+     "wk16": 159.45,
+     "wk17": 164.2
+    },
+    {
+     "rosterID": 2,
+     "managerID": "1003557305339768832",
+     "team": "gjb31",
+     "score": 158.36,
+     "rank": 5,
+     "wk15": 160.76,
+     "wk16": 156.2,
+     "wk17": 158.12
+    },
+    {
+     "rosterID": 4,
+     "managerID": "999465012592803840",
+     "team": "Libermaniacjr",
+     "score": 157.52,
+     "rank": 6,
+     "wk15": 155.76,
+     "wk16": 160.17,
+     "wk17": 156.63
+    },
+    {
+     "rosterID": 10,
+     "managerID": "1265959180385128448",
+     "team": "koru13",
+     "score": 152.45,
+     "rank": 7,
+     "wk15": 151.94,
+     "wk16": 157.85,
+     "wk17": 147.55
+    },
+    {
+     "rosterID": 7,
+     "managerID": "1127702793260810240",
+     "team": "CeceRAIDERS",
+     "score": 130.14,
+     "rank": 8,
+     "wk15": 124.14,
+     "wk16": 133.63,
+     "wk17": 132.66
+    },
+    {
+     "rosterID": 9,
+     "managerID": "852680448239869952",
+     "team": "maxabroms",
+     "score": 129.34,
+     "rank": 9,
+     "wk15": 131.03,
+     "wk16": 127.18,
+     "wk17": 129.8
+    },
+    {
+     "rosterID": 6,
+     "managerID": "1265051241960964096",
+     "team": "confonger",
+     "score": 126.42,
+     "rank": 10,
+     "wk15": 123.21,
+     "wk16": 128.7,
+     "wk17": 127.35
+    }
+   ]
+  },
+  {
+   "week": 6,
+   "label": "Week 6",
+   "fileDate": "2026-10-12",
+   "teams": [
+    {
+     "rosterID": 8,
+     "managerID": "1265769112982786048",
+     "team": "CheckNate10",
      "score": 182.42,
-     "rank": 2,
+     "rank": 1,
      "wk15": 179.03,
      "wk16": 182.73,
      "wk17": 185.51
+    },
+    {
+     "rosterID": 3,
+     "managerID": "1265033826942337024",
+     "team": "FatherK11",
+     "score": 182.26,
+     "rank": 2,
+     "wk15": 188.15,
+     "wk16": 179.74,
+     "wk17": 178.88
     },
     {
      "rosterID": 1,
@@ -627,30 +627,30 @@
      "wk17": 146.47
     },
     {
-     "rosterID": 7,
-     "managerID": "1127702793260810240",
-     "team": "CeceRAIDERS",
-     "score": 145.69,
-     "rank": 9,
-     "wk15": 139.49,
-     "wk16": 148.95,
-     "wk17": 148.62
-    },
-    {
      "rosterID": 6,
      "managerID": "1265051241960964096",
      "team": "confonger",
      "score": 139.9,
-     "rank": 10,
+     "rank": 9,
      "wk15": 137.39,
      "wk16": 140.1,
      "wk17": 142.21
+    },
+    {
+     "rosterID": 7,
+     "managerID": "1127702793260810240",
+     "team": "CeceRAIDERS",
+     "score": 137.21,
+     "rank": 10,
+     "wk15": 131.01,
+     "wk16": 140.47,
+     "wk17": 140.14
     }
    ]
   },
   {
-   "week": 6,
-   "label": "Week 6",
+   "week": 7,
+   "label": "Week 7",
    "fileDate": "2026-10-19",
    "teams": [
     {
@@ -664,11 +664,21 @@
      "wk17": 187.56
     },
     {
+     "rosterID": 8,
+     "managerID": "1265769112982786048",
+     "team": "CheckNate10",
+     "score": 183.61,
+     "rank": 2,
+     "wk15": 181.79,
+     "wk16": 184.05,
+     "wk17": 184.99
+    },
+    {
      "rosterID": 4,
      "managerID": "999465012592803840",
      "team": "Libermaniacjr",
      "score": 183.3,
-     "rank": 2,
+     "rank": 3,
      "wk15": 179.82,
      "wk16": 186.54,
      "wk17": 183.55
@@ -678,20 +688,10 @@
      "managerID": "1264841066129932288",
      "team": "Matt2001Martin",
      "score": 182.53,
-     "rank": 3,
+     "rank": 4,
      "wk15": 185.64,
      "wk16": 178.7,
      "wk17": 183.25
-    },
-    {
-     "rosterID": 8,
-     "managerID": "1265769112982786048",
-     "team": "CheckNate10",
-     "score": 180.28,
-     "rank": 4,
-     "wk15": 176.42,
-     "wk16": 182.78,
-     "wk17": 181.65
     },
     {
      "rosterID": 5,
@@ -707,11 +707,11 @@
      "rosterID": 10,
      "managerID": "1265959180385128448",
      "team": "koru13",
-     "score": 174.93,
+     "score": 173.67,
      "rank": 6,
-     "wk15": 172.27,
+     "wk15": 170.38,
      "wk16": 178.1,
-     "wk17": 174.42
+     "wk17": 172.54
     },
     {
      "rosterID": 2,
@@ -737,27 +737,27 @@
      "rosterID": 9,
      "managerID": "852680448239869952",
      "team": "maxabroms",
-     "score": 145.94,
+     "score": 145.2,
      "rank": 9,
      "wk15": 145.96,
-     "wk16": 144.87,
+     "wk16": 142.67,
      "wk17": 146.98
     },
     {
      "rosterID": 6,
      "managerID": "1265051241960964096",
      "team": "confonger",
-     "score": 135.86,
+     "score": 122.43,
      "rank": 10,
-     "wk15": 133.86,
-     "wk16": 137.51,
-     "wk17": 136.22
+     "wk15": 120.67,
+     "wk16": 123.97,
+     "wk17": 122.64
     }
    ]
   },
   {
-   "week": 7,
-   "label": "Week 7",
+   "week": 8,
+   "label": "Week 8",
    "fileDate": "2026-10-26",
    "teams": [
     {
@@ -781,24 +781,24 @@
      "wk17": 185.72
     },
     {
-     "rosterID": 8,
-     "managerID": "1265769112982786048",
-     "team": "CheckNate10",
-     "score": 183.34,
-     "rank": 3,
-     "wk15": 181.9,
-     "wk16": 183.53,
-     "wk17": 184.6
-    },
-    {
      "rosterID": 1,
      "managerID": "1264841066129932288",
      "team": "Matt2001Martin",
      "score": 182.77,
-     "rank": 4,
+     "rank": 3,
      "wk15": 185.68,
      "wk16": 179.84,
      "wk17": 182.8
+    },
+    {
+     "rosterID": 8,
+     "managerID": "1265769112982786048",
+     "team": "CheckNate10",
+     "score": 182.68,
+     "rank": 4,
+     "wk15": 180.3,
+     "wk16": 183.53,
+     "wk17": 184.2
     },
     {
      "rosterID": 5,
@@ -863,8 +863,8 @@
    ]
   },
   {
-   "week": 8,
-   "label": "Week 8",
+   "week": 9,
+   "label": "Week 9",
    "fileDate": "2026-11-02",
    "teams": [
     {
@@ -921,9 +921,9 @@
      "rosterID": 2,
      "managerID": "1003557305339768832",
      "team": "gjb31",
-     "score": 173.57,
+     "score": 172.65,
      "rank": 6,
-     "wk15": 174.03,
+     "wk15": 171.29,
      "wk16": 172.49,
      "wk17": 174.18
     },
@@ -961,17 +961,17 @@
      "rosterID": 6,
      "managerID": "1265051241960964096",
      "team": "confonger",
-     "score": 137.1,
+     "score": 129.8,
      "rank": 10,
-     "wk15": 134.37,
-     "wk16": 137.93,
-     "wk17": 139.01
+     "wk15": 129.14,
+     "wk16": 129.66,
+     "wk17": 130.61
     }
    ]
   },
   {
-   "week": 9,
-   "label": "Week 9",
+   "week": 10,
+   "label": "Week 10",
    "fileDate": "2026-11-09",
    "teams": [
     {
@@ -985,21 +985,11 @@
      "wk17": 191.46
     },
     {
-     "rosterID": 3,
-     "managerID": "1265033826942337024",
-     "team": "FatherK11",
-     "score": 187.85,
-     "rank": 2,
-     "wk15": 192.21,
-     "wk16": 183.76,
-     "wk17": 187.58
-    },
-    {
      "rosterID": 1,
      "managerID": "1264841066129932288",
      "team": "Matt2001Martin",
      "score": 184.53,
-     "rank": 3,
+     "rank": 2,
      "wk15": 187.38,
      "wk16": 181.83,
      "wk17": 184.39
@@ -1009,7 +999,7 @@
      "managerID": "1265769112982786048",
      "team": "CheckNate10",
      "score": 183.08,
-     "rank": 4,
+     "rank": 3,
      "wk15": 180.52,
      "wk16": 184.47,
      "wk17": 184.26
@@ -1019,7 +1009,7 @@
      "managerID": "1265035377249374208",
      "team": "Marcusablock",
      "score": 179.25,
-     "rank": 5,
+     "rank": 4,
      "wk15": 180.27,
      "wk16": 175.2,
      "wk17": 182.29
@@ -1029,7 +1019,7 @@
      "managerID": "1003557305339768832",
      "team": "gjb31",
      "score": 176.77,
-     "rank": 6,
+     "rank": 5,
      "wk15": 175.41,
      "wk16": 175.87,
      "wk17": 179.04
@@ -1039,10 +1029,20 @@
      "managerID": "1265959180385128448",
      "team": "koru13",
      "score": 176.52,
-     "rank": 7,
+     "rank": 6,
      "wk15": 174.49,
      "wk16": 180.84,
      "wk17": 174.24
+    },
+    {
+     "rosterID": 3,
+     "managerID": "1265033826942337024",
+     "team": "FatherK11",
+     "score": 173.97,
+     "rank": 7,
+     "wk15": 177.68,
+     "wk16": 170.81,
+     "wk17": 173.43
     },
     {
      "rosterID": 7,
@@ -1068,28 +1068,28 @@
      "rosterID": 6,
      "managerID": "1265051241960964096",
      "team": "confonger",
-     "score": 139.17,
+     "score": 133.49,
      "rank": 10,
-     "wk15": 139.03,
-     "wk16": 139.22,
-     "wk17": 139.27
+     "wk15": 133.35,
+     "wk16": 133.13,
+     "wk17": 133.99
     }
    ]
   },
   {
-   "week": 10,
-   "label": "Week 10",
+   "week": 11,
+   "label": "Week 11",
    "fileDate": "2026-11-16",
    "teams": [
     {
      "rosterID": 1,
      "managerID": "1264841066129932288",
      "team": "Matt2001Martin",
-     "score": 186.45,
+     "score": 186.09,
      "rank": 1,
      "wk15": 187.86,
-     "wk16": 184.15,
-     "wk17": 187.34
+     "wk16": 183.48,
+     "wk17": 186.93
     },
     {
      "rosterID": 3,
@@ -1184,8 +1184,8 @@
    ]
   },
   {
-   "week": 11,
-   "label": "Week 11",
+   "week": 12,
+   "label": "Week 12",
    "fileDate": "2026-11-23",
    "teams": [
     {
@@ -1287,113 +1287,6 @@
      "wk15": 129.85,
      "wk16": 130.72,
      "wk17": 129.88
-    }
-   ]
-  },
-  {
-   "week": 12,
-   "label": "Week 12",
-   "fileDate": "2026-11-25",
-   "teams": [
-    {
-     "rosterID": 1,
-     "managerID": "1264841066129932288",
-     "team": "Matt2001Martin",
-     "score": 187.97,
-     "rank": 1,
-     "wk15": 189.77,
-     "wk16": 185.41,
-     "wk17": 188.73
-    },
-    {
-     "rosterID": 3,
-     "managerID": "1265033826942337024",
-     "team": "FatherK11",
-     "score": 185.01,
-     "rank": 2,
-     "wk15": 187.52,
-     "wk16": 182.03,
-     "wk17": 185.48
-    },
-    {
-     "rosterID": 4,
-     "managerID": "999465012592803840",
-     "team": "Libermaniacjr",
-     "score": 181.39,
-     "rank": 3,
-     "wk15": 174.18,
-     "wk16": 185.03,
-     "wk17": 184.96
-    },
-    {
-     "rosterID": 5,
-     "managerID": "1265035377249374208",
-     "team": "Marcusablock",
-     "score": 177.78,
-     "rank": 4,
-     "wk15": 181.17,
-     "wk16": 172.34,
-     "wk17": 179.83
-    },
-    {
-     "rosterID": 10,
-     "managerID": "1265959180385128448",
-     "team": "koru13",
-     "score": 175.16,
-     "rank": 5,
-     "wk15": 174.12,
-     "wk16": 180.12,
-     "wk17": 171.24
-    },
-    {
-     "rosterID": 2,
-     "managerID": "1003557305339768832",
-     "team": "gjb31",
-     "score": 170.77,
-     "rank": 6,
-     "wk15": 170.52,
-     "wk16": 170.74,
-     "wk17": 171.06
-    },
-    {
-     "rosterID": 8,
-     "managerID": "1265769112982786048",
-     "team": "CheckNate10",
-     "score": 170.08,
-     "rank": 7,
-     "wk15": 167.19,
-     "wk16": 172.42,
-     "wk17": 170.63
-    },
-    {
-     "rosterID": 7,
-     "managerID": "1127702793260810240",
-     "team": "CeceRAIDERS",
-     "score": 155.06,
-     "rank": 8,
-     "wk15": 154.52,
-     "wk16": 158.17,
-     "wk17": 152.49
-    },
-    {
-     "rosterID": 9,
-     "managerID": "852680448239869952",
-     "team": "maxabroms",
-     "score": 145.8,
-     "rank": 9,
-     "wk15": 148.09,
-     "wk16": 145.23,
-     "wk17": 144.07
-    },
-    {
-     "rosterID": 6,
-     "managerID": "1265051241960964096",
-     "team": "confonger",
-     "score": 138.69,
-     "rank": 10,
-     "wk15": 138.41,
-     "wk16": 138.49,
-     "wk17": 139.17
     }
    ]
   }
