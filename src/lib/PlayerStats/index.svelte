@@ -25,6 +25,9 @@
     let moveDisplay = $state('allTime');   // Start/Bench This MF
     let jitDisplay = $state('allTime');    // JIT Tracker (All-Time = most recent season)
     let position = $state('ALL');
+    // Player Records: which games count
+    const GAME_TYPES = [['combined', 'Combined'], ['regular', 'Regular Season'], ['playoffs', 'Playoffs']];
+    let gameType = $state('combined');
 
     const hasPlayerPoints = (records) =>
         records?.regularSeasonData?.lineupWeeks?.some(w => w.playersPoints);
@@ -69,8 +72,11 @@
 
     let playoffGames = $derived(allPlayerGames(playoffWeeks).map(g => ({...g, playoff: true})));
     let selectedYear = $derived(display == 'allTime' ? null : display);
-    let seasonRows = $derived(topN(filterBy(seasons, {year: selectedYear, position, positionOf}), TOP_N));
-    let allGames = $derived([...games, ...playoffGames]);
+    // games picked by the Combined / Regular Season / Playoffs buttons
+    let allGames = $derived(gameType == 'regular' ? games : gameType == 'playoffs' ? playoffGames : [...games, ...playoffGames]);
+    let pickedSeasons = $derived(gameType == 'regular' ? seasons : seasonTotals(allGames));
+    let seasonRows = $derived(topN(filterBy(pickedSeasons, {year: selectedYear, position, positionOf}), TOP_N));
+    let gameTypeNote = $derived(gameType == 'regular' ? 'Regular season' : gameType == 'playoffs' ? 'Playoffs' : 'Regular season and playoffs');
     let gameRows = $derived(topN(filterBy(allGames.filter(g => g.started), {year: selectedYear, position, positionOf}), TOP_N));
     let benchGameRows = $derived(topN(filterBy(allGames.filter(g => !g.started), {year: selectedYear, position, positionOf}), TOP_N));
 
@@ -164,6 +170,7 @@
         return managers?.length ? [...managers].sort().join('|') : `roster${rosterID}`;
     };
     let missedRows = $derived.by(() => {
+        if(gameType == 'playoffs') return [];   // games missed is regular season only
         let rows = (missedData?.rows || [])
             .filter(r => selectedYear === null || r.year == selectedYear)
             .filter(r => position == 'ALL' || positionOf(r.pid) == position);
@@ -385,6 +392,17 @@
         <!-- All-Time or a single season -->
         {@render yearPicker(display, (v) => display = v)}
 
+        <!-- which games count: Combined / Regular Season / Playoffs -->
+        <div class="buttonHolder">
+            <Group variant="outlined">
+                {#each GAME_TYPES as [type, label]}
+                    <Button class="selectionButtons" onclick={() => gameType = type} variant="{gameType == type ? 'raised' : 'outlined'}">
+                        <Label>{label}</Label>
+                    </Button>
+                {/each}
+            </Group>
+        </div>
+
         <!-- position filter: two rows -->
         {#each [['ALL', 'QB', 'RB', 'WR'], ['TE', 'K', 'DEF']] as posRow}
             <div class="buttonHolder">
@@ -407,7 +425,7 @@
                         <Row>
                             <Cell class="header tableHeader" colspan={display == 'allTime' ? 5 : 4}>
                                 {seasonTitle}{posLabel}
-                                <span class="subTitle">Regular season, points scored while on a roster in the league</span>
+                                <span class="subTitle">{gameTypeNote}, points scored while on a roster in the league</span>
                             </Cell>
                         </Row>
                         <Row>
@@ -476,7 +494,7 @@
                                 <Cell>{row.missed}</Cell>
                             </Row>
                         {:else}
-                            <Row><Cell colspan=4>{missedData ? 'No missed games.' : 'Upload games_missed.json to static/data/ to fill this in.'}</Cell></Row>
+                            <Row><Cell colspan=4>{gameType == 'playoffs' ? 'Games missed only covers the regular season.' : missedData ? 'No missed games.' : 'Upload games_missed.json to static/data/ to fill this in.'}</Cell></Row>
                         {/each}
                     </Body>
                 </DataTable>
@@ -485,7 +503,7 @@
 
             <!-- right: best single games (starts), then best bench games -->
             <div class="panel">
-                {#each [[gameTitle, gameRows, 'Regular season and playoffs, starters only'], [benchTitle, benchGameRows, 'Regular season and playoffs, points left on the bench']] as [title, rows, note]}
+                {#each [[gameTitle, gameRows, `${gameTypeNote}, starters only`], [benchTitle, benchGameRows, `${gameTypeNote}, points left on the bench`]] as [title, rows, note]}
                 <div class="tableScroll stacked">
                 <DataTable class="playerTable">
                     <Head>
