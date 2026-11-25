@@ -4,6 +4,7 @@
     import AllTimeRecords from './AllTimeRecords.svelte';
     import PerSeasonRecords from './PerSeasonRecords.svelte';
     import LastUpdated from './LastUpdated.svelte';
+    import TeamValue from '$lib/TeamValue/index.svelte';
 
     // sections: which sections this page shows (Team Stats: lineups + positions; Records: seasons + scoring)
     let {leagueData, totals, stale, leagueTeamManagers, sections = ['lineups', 'positions', 'seasons', 'scoring']} = $props();
@@ -153,6 +154,11 @@
 
 <div class="rankingsWrapper">
     <!-- wait until the records are in before drawing a season (default view) -->
+    <!-- Team Value table (moved from the home page) sits above Setting Lineups on Team Stats -->
+    {#if sections.includes('lineups')}
+        <TeamValue />
+    {/if}
+
     {#if currentYear && leagueRosterRecords && seasonWeekRecords}
     {#each SECTIONS as sec}
     <div class="section" style={sec.color ? `--headerPrimary: ${sec.color}` : ''}>
