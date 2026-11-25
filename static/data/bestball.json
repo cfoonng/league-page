@@ -4,8 +4,8 @@
    "managerID": "1003557305339768832",
    "team": "gjb31",
    "rank": 1,
-   "record": "17-7",
-   "actualRecord": "16-8",
+   "record": "17-8",
+   "actualRecord": "16-9",
    "actualRank": 3,
    "change": 2
   },
@@ -13,8 +13,8 @@
    "managerID": "1265769112982786048",
    "team": "CheckNate10",
    "rank": 2,
-   "record": "14-10",
-   "actualRecord": "13-11",
+   "record": "15-10",
+   "actualRecord": "14-11",
    "actualRank": 6,
    "change": 4
   },
@@ -22,8 +22,8 @@
    "managerID": "1264841066129932288",
    "team": "Matt2001Martin",
    "rank": 3,
-   "record": "14-10",
-   "actualRecord": "14-10",
+   "record": "15-10",
+   "actualRecord": "15-10",
    "actualRank": 5,
    "change": 2
   },
@@ -31,8 +31,8 @@
    "managerID": "1265035377249374208",
    "team": "Marcusablock",
    "rank": 4,
-   "record": "13-11",
-   "actualRecord": "18-6",
+   "record": "14-11",
+   "actualRecord": "19-6",
    "actualRank": 1,
    "change": -3
   },
@@ -40,8 +40,8 @@
    "managerID": "999465012592803840",
    "team": "Libermaniacjr",
    "rank": 5,
-   "record": "13-11",
-   "actualRecord": "14-10",
+   "record": "14-11",
+   "actualRecord": "15-10",
    "actualRank": 4,
    "change": -1
   },
@@ -49,8 +49,8 @@
    "managerID": "1265033826942337024",
    "team": "FatherK11",
    "rank": 6,
-   "record": "13-11",
-   "actualRecord": "16-8",
+   "record": "13-12",
+   "actualRecord": "16-9",
    "actualRank": 2,
    "change": -4
   },
@@ -58,8 +58,8 @@
    "managerID": "1265959180385128448",
    "team": "koru13",
    "rank": 7,
-   "record": "12-12",
-   "actualRecord": "6-18",
+   "record": "13-12",
+   "actualRecord": "6-19",
    "actualRank": 10,
    "change": 3
   },
@@ -67,8 +67,8 @@
    "managerID": "1265051241960964096",
    "team": "confonger",
    "rank": 8,
-   "record": "10-14",
-   "actualRecord": "8-16",
+   "record": "10-15",
+   "actualRecord": "9-16",
    "actualRank": 7,
    "change": -1
   },
@@ -76,8 +76,8 @@
    "managerID": "852680448239869952",
    "team": "maxabroms",
    "rank": 9,
-   "record": "8-16",
-   "actualRecord": "8-16",
+   "record": "8-17",
+   "actualRecord": "8-17",
    "actualRank": 8,
    "change": -1
   },
@@ -85,8 +85,8 @@
    "managerID": "1127702793260810240",
    "team": "CeceRAIDERS",
    "rank": 10,
-   "record": "6-18",
-   "actualRecord": "7-17",
+   "record": "6-19",
+   "actualRecord": "7-18",
    "actualRank": 9,
    "change": -1
   }
@@ -186,20 +186,20 @@
   ],
   "2026": [
    {
-    "managerID": "1003557305339768832",
-    "team": "gjb31",
+    "managerID": "1264841066129932288",
+    "team": "Matt2001Martin",
     "rank": 1,
-    "record": "8-2",
-    "actualRecord": "9-1",
+    "record": "9-2",
+    "actualRecord": "9-2",
     "actualRank": 1,
     "change": 0
    },
    {
-    "managerID": "1264841066129932288",
-    "team": "Matt2001Martin",
+    "managerID": "1003557305339768832",
+    "team": "gjb31",
     "rank": 2,
-    "record": "8-2",
-    "actualRecord": "8-2",
+    "record": "8-3",
+    "actualRecord": "9-2",
     "actualRank": 2,
     "change": 0
    },
@@ -207,44 +207,44 @@
     "managerID": "1265033826942337024",
     "team": "FatherK11",
     "rank": 3,
-    "record": "7-3",
-    "actualRecord": "7-3",
-    "actualRank": 3,
-    "change": 0
+    "record": "7-4",
+    "actualRecord": "7-4",
+    "actualRank": 5,
+    "change": 2
    },
    {
     "managerID": "1265959180385128448",
     "team": "koru13",
     "rank": 4,
-    "record": "6-4",
-    "actualRecord": "2-8",
-    "actualRank": 8,
-    "change": 4
+    "record": "7-4",
+    "actualRecord": "2-9",
+    "actualRank": 9,
+    "change": 5
    },
    {
     "managerID": "999465012592803840",
     "team": "Libermaniacjr",
     "rank": 5,
-    "record": "5-5",
-    "actualRecord": "7-3",
-    "actualRank": 5,
-    "change": 0
+    "record": "6-5",
+    "actualRecord": "8-3",
+    "actualRank": 4,
+    "change": -1
    },
    {
     "managerID": "1265035377249374208",
     "team": "Marcusablock",
     "rank": 6,
-    "record": "4-6",
-    "actualRecord": "7-3",
-    "actualRank": 4,
-    "change": -2
+    "record": "5-6",
+    "actualRecord": "8-3",
+    "actualRank": 3,
+    "change": -3
    },
    {
     "managerID": "1265769112982786048",
     "team": "CheckNate10",
     "rank": 7,
-    "record": "4-6",
-    "actualRecord": "4-6",
+    "record": "5-6",
+    "actualRecord": "5-6",
     "actualRank": 6,
     "change": -1
    },
@@ -252,17 +252,17 @@
     "managerID": "1127702793260810240",
     "team": "CeceRAIDERS",
     "rank": 8,
-    "record": "3-7",
-    "actualRecord": "3-7",
-    "actualRank": 7,
-    "change": -1
+    "record": "3-8",
+    "actualRecord": "3-8",
+    "actualRank": 8,
+    "change": 0
    },
    {
     "managerID": "852680448239869952",
     "team": "maxabroms",
     "rank": 9,
-    "record": "3-7",
-    "actualRecord": "1-9",
+    "record": "3-8",
+    "actualRecord": "1-10",
     "actualRank": 10,
     "change": 1
    },
@@ -270,10 +270,10 @@
     "managerID": "1265051241960964096",
     "team": "confonger",
     "rank": 10,
-    "record": "2-8",
-    "actualRecord": "2-8",
-    "actualRank": 9,
-    "change": -1
+    "record": "2-9",
+    "actualRecord": "3-8",
+    "actualRank": 7,
+    "change": -3
    }
   ]
  }
