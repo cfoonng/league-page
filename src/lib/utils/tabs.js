@@ -12,16 +12,16 @@ export const tabs = [
         key: 'records',
     },
     {
+        icon: 'emoji_events',
+        label: 'Records',
+        dest: '/league-records',
+        key: 'league_records',
+    },
+    {
         icon: 'sports_football',
         label: 'Player Stats',
         dest: '/player-stats',
         key: 'player_stats',
-    },
-    {
-        icon: 'sports',
-        label: 'Matchups',
-        dest: '/matchups',
-        key: 'matchups',
     },
     {
         icon: 'article',
@@ -77,11 +77,5 @@ export const tabs = [
         label: 'Ring of Honor',
         dest: '/ring-of-honor',
         key: 'ring_of_honor',
-    },
-    {
-        icon: 'lightbulb',
-        label: 'Resources',
-        dest: '/resources',
-        key: 'resources',
     },
 ];
