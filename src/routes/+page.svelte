@@ -2,7 +2,7 @@
 	import LinearProgress from '@smui/linear-progress';
 	import { getNflState, leagueName, getAwards, getLeagueTeamManagers, homepageText, managers, gotoManager, enableBlog, waitForAll } from '$lib/utils/helper';
 	import { Transactions, HomePost} from '$lib/components';
-	import TeamValue from '$lib/TeamValue/index.svelte';
+	import PowerRank from '$lib/PowerRank/index.svelte';
 	import { getAvatarFromTeamManagers, getTeamFromTeamManagers } from '$lib/utils/helperFunctions/universalFunctions';
 
     const nflState = getNflState();
