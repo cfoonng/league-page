@@ -189,7 +189,9 @@
     });
     let missedTitle = $derived(display == 'allTime' ? 'All-Time Most Games Missed' : `${display} Most Games Missed`);
 
-    let seasonTitle = $derived(display == 'allTime' ? 'All-Time Single Season Scoring Records' : `${display} Season Leaders`);
+    // All-Time title follows the Combined / Regular Season / Playoffs buttons
+    let seasonKind = $derived(gameType == 'regular' ? 'Regular Season' : gameType == 'playoffs' ? 'Playoffs' : 'Single Season');
+    let seasonTitle = $derived(display == 'allTime' ? `All-Time ${seasonKind} Scoring Records` : `${display} Season Leaders`);
     let gameTitle = $derived(display == 'allTime' ? 'All-Time Single Game Performances' : `${display} Single Game Performances`);
     let benchTitle = $derived(display == 'allTime' ? 'All-Time Best Bench Performances' : `${display} Best Bench Performances`);
     let posLabel = $derived(position == 'ALL' ? '' : ` (${position})`);
