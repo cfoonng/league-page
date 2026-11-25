@@ -201,7 +201,7 @@
 
 <!-- full-width sections below the intro + champ -->
 <div class="fullWidth">
-    <TeamValue />
+    <PowerRank />
 </div>
 
 <div class="fullWidth homeTransactions">
