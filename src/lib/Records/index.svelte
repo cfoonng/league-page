@@ -5,7 +5,8 @@
     import PerSeasonRecords from './PerSeasonRecords.svelte';
     import LastUpdated from './LastUpdated.svelte';
 
-    let {leagueData, totals, stale, leagueTeamManagers} = $props();;
+    // sections: which sections this page shows (Team Stats: lineups + positions; Records: seasons + scoring)
+    let {leagueData, totals, stale, leagueTeamManagers, sections = ['lineups', 'positions', 'seasons', 'scoring']} = $props();
 
     const refreshTransactions = async () => {
         const newTransactions = await getLeagueTransactions(false, true);
@@ -75,13 +76,16 @@
     }
 
     // every section has its own All-Time / year choice
-    // color: the blue boxes' color for that section (the first keeps the normal color)
-    const SECTIONS = [
-        {id: 'lineups', title: 'Setting Lineups', color: null},
-        {id: 'positions', title: 'Position Contributions', color: 'var(--sectionTwo)'},
-        {id: 'seasons', title: 'Best/Worst Seasons', color: 'var(--sectionThree)'},
-        {id: 'scoring', title: 'Scoring Records', color: 'var(--sectionFour)'},
+    // color: the blue boxes' color, by order on the page (the first keeps the normal color)
+    const ALL_SECTIONS = [
+        {id: 'lineups', title: 'Setting Lineups'},
+        {id: 'positions', title: 'Position Contributions'},
+        {id: 'seasons', title: 'Best/Worst Seasons'},
+        {id: 'scoring', title: 'Scoring Records'},
     ];
+    const COLORS = [null, 'var(--sectionTwo)', 'var(--sectionThree)', 'var(--sectionFour)'];
+    const SECTIONS = ALL_SECTIONS.filter(s => sections.includes(s.id))
+        .map((s, i) => ({...s, color: COLORS[i] ?? null}));
     // null = the newest season (the default); 'allTime' or a year once a button is clicked
     let views = $state({lineups: null, positions: null, seasons: 'allTime', scoring: 'allTime'});
     const viewOf = (id) => views[id] ?? Number(currentYear);
