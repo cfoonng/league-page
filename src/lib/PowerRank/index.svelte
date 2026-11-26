@@ -135,7 +135,7 @@
 <style>
     .powerRank {
         width: 100%;
-        max-width: 700px;
+        max-width: 560px;
         margin: 2em auto;
     }
 
@@ -161,6 +161,8 @@
     :global(.powerTable td),
     :global(.powerTable th) {
         text-align: center;
+        /* tight columns so the table fits next to the graph */
+        padding: 4px 8px;
     }
 
     .subTitle {
@@ -195,7 +197,7 @@
         height: 30px;
         width: 30px;
         border-radius: 50%;
-        margin-right: 10px;
+        margin-right: 8px;
         border: 0.25px solid #777;
     }
 
