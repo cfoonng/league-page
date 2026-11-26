@@ -11,6 +11,7 @@
     import { getLeagueRosters, getLeagueTeamManagers, getLeagueData, getNflState, loadPlayers, waitForAll } from '$lib/utils/helper';
     import { gotoManager } from '$lib/utils/helperFunctions/universalFunctions';
     import { bestLineup } from '$lib/PlayerStats/startBenchMath';
+    import PowerChart from './PowerChart.svelte';
 
     const SCORE_WEEKS = [15, 16, 17];
     const LAST_REG_WEEK = 14;           // the site's own backup only covers the regular season
@@ -130,13 +131,52 @@
     const goto = (row) => gotoManager({leagueTeamManagers, managerID: row.managerID, rosterID: row.rosterID});
 
     const fmt = (n) => (n == null ? '–' : Number(n).toFixed(2));
+
+    // weeks for the graph: everything uploaded, plus this week if the site worked it out itself
+    let chartWeeks = $derived(current?.live && !weeks.some(w => w.week == current.week)
+        ? [...weeks, current].sort((a, b) => a.week - b.week)
+        : weeks);
 </script>
 
 <style>
     .powerRank {
         width: 100%;
-        max-width: 560px;
+        max-width: 1200px;
         margin: 2em auto;
+    }
+
+    /* table and graph side by side (stacked on narrow screens) */
+    .powerRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2em;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .tablePanel {
+        flex: 0 1 560px;
+        min-width: 0;
+    }
+
+    .chartPanel {
+        flex: 1 1 480px;
+        min-width: 0;
+        max-width: 640px;
+        box-shadow: 0px 3px 3px -2px var(--boxShadowOne), 0px 3px 4px 0px var(--boxShadowTwo), 0px 1px 8px 0px var(--boxShadowThree);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .chartHeader {
+        background-color: var(--headerPrimary);
+        text-align: center;
+        padding: 10px 8px;
+        font-weight: 500;
+    }
+
+    .chartBody {
+        padding: 6px 8px 8px;
     }
 
     .buttonHolder {
@@ -264,6 +304,8 @@
             </Group>
         </div>
 
+        <div class="powerRow">
+        <div class="tablePanel">
         <div class="tableScroll">
             <DataTable class="powerTable">
                 <Head>
@@ -311,6 +353,19 @@
                     {/each}
                 </Body>
             </DataTable>
+        </div>
+        </div>
+
+        <!-- graph: power rank or power score by week -->
+        <div class="chartPanel">
+            <div class="chartHeader">
+                Power {view == 'rank' ? 'Rank' : 'Score'} by Week
+                <span class="subTitle">Hover or tap a line to highlight a team</span>
+            </div>
+            <div class="chartBody">
+                <PowerChart weeks={chartWeeks} {view} nameFor={nameFor} />
+            </div>
+        </div>
         </div>
     {/if}
 </div>
