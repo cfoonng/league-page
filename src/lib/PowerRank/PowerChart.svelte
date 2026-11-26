@@ -19,10 +19,12 @@
         : Array.from({length: n}, (_, i) => `hsl(${Math.round(i * 360 / n)}, 65%, 50%)`);
 
     // drawing area (scaled to fit the width of its box)
-    const W = 640, H = 400;
+    // the Power Score view is a bit taller so the scores have more room
+    const W = 640;
+    let H = $derived(view == 'score' ? 480 : 400);
     const PAD = { left: 44, right: 96, top: 18, bottom: 34 };
     const plotW = W - PAD.left - PAD.right;
-    const plotH = H - PAD.top - PAD.bottom;
+    let plotH = $derived(H - PAD.top - PAD.bottom);
 
     let hovered = $state(null);      // {rosterID, ix} of the dot being pointed at
     let pinned = $state(null);       // rosterID kept highlighted by a tap/click
